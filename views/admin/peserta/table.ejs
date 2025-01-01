@@ -1,0 +1,58 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Data Peserta Training</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="example1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Nomor Handphone</th>
+                        <th>Asal Komisariat</th>
+                        <th>Asal Cabang</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i = 0; i < peserta.length; i++) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= peserta[i].name %></td>
+                        <td><%= peserta[i].email %></td>
+                        <td><%= peserta[i].no_Hp %></td>
+                        <td><%= peserta[i].asal_komisariat %></td>
+                        <td><%= peserta[i].asal_cabang %></td>
+                        <td>
+                            <form style="display: inline-block;" action="/peserta/delete/<%= peserta[i]._id %>?_method=DELETE" method="post">
+                                <a href="/peserta/edit/<%= peserta[i]._id %>" class="btn btn-info btn-sm">
+                                    <i class="fas fa-pencil-alt"></i> Ubah
+                                </a>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    $('#example1').DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+    });
+});
+</script>

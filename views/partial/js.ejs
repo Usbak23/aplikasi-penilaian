@@ -1,0 +1,100 @@
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/sb-admin2/vendor/jquery/jquery.min.js"></script>
+    <script src="/sb-admin2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/sb-admin2/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/sb-admin2/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="/sb-admin2/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+     <script src="/sb-admin2/js/demo/chart-area-demo.js"></script>
+    <script src="/sb-admin2/js/demo/chart-pie-demo.js"></script> 
+   
+
+
+</body>
+
+</html>
+
+<!-- jQuery -->
+<script src="/sb-admin2/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="/sb-admin2/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="/sb-admin2/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="/sb-admin2/plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="/sb-admin2/plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="/sb-admin2/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="/sb-admin2/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="/sb-admin2/plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="/sb-admin2/plugins/moment/moment.min.js"></script>
+<script src="/sb-admin2/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="/sb-admin2/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="/sb-admin2/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="/sb-admin2/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/sb-admin2/dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<!-- <script src="/sb-admin2/dist/js/demo.js"></script> -->
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- <script src="/sb-admin2/dist/js/pages/dashboard.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+  $(function () {
+      $("#example1").DataTable({
+          "responsive": true, "lengthChange": false, "autoWidth": false,
+          "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false,
+          "responsive": true,
+      });
+
+      $('.select2').select2()
+  });
+</script>
+<script>
+  const modal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+
+  // Menampilkan modal dengan gambar
+  function showModal(imageSrc) {
+    modalImage.src = imageSrc;
+    modal.classList.add('active');
+  }
+
+  // Menutup modal
+  function hideModal() {
+    modal.classList.remove('active');
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.min.js"></script>
+</body>
+</html>

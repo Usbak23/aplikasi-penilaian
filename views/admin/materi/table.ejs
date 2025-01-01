@@ -1,0 +1,54 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">Data Materi Training</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table id="example1" class="table table-bordered">
+                <thead>
+                    <tr>
+                    <th>No.</th>
+                    <th>Nama Materi</th>
+                    <th>Judul Materi</th>
+                    <th>Narasumber</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < materi.length; i++){ %>
+                    <tr>
+
+                        <th>
+                            <%= i + 1 %>
+                        </th>
+                        <th>
+                            <%= materi[i].materi %>
+                        </th>
+                        <th>
+                            <%= materi[i].judulMateri %>
+                        </th>
+                        <th>
+                            <%= materi[i].narasumber %>
+                        </th>
+                        <th>
+                            <form action="/materi/delete/<%= materi[i]._id %>?_method=DELETE" method="post">
+                                <a href="/materi/edit/<%= materi[i]._id %>" class="btn btn-info btn-sm">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    Ubah
+                                </a>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                    Hapus
+                                </button>
+                            </form>
+                        </th>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <!-- /.card-body -->
+</div>

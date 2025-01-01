@@ -1,0 +1,81 @@
+<%- include ../../partial/header.ejs %>
+    <%- include ../../partial/sidebar.ejs %>
+        <%- include ../../partial/navbar.ejs %>
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1> Data Pemandu Training </h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/mot">Pemandu</a></li>
+                                    <li class="breadcrumb-item active"></a>Tambah</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Form Tambah Pemandu</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form action="/mot/create" method="POST">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <div>
+                                                    <label for="name">Masukan Nama Pemandu</label>
+                                                <input type="text" name="name" class="form-control"
+                                                    id="name" placeholder="Masukan Nama Pemandu"
+                                                    required>
+                                                <label for="email">Masukan Email Pemandu</label>
+                                                <input type="text" name="email" class="form-control"
+                                                    id="email" placeholder="Masukan Email Pemandu" required>
+                                            
+                                           
+                                                <label for="phoneNumber">Masukan No Hand Phone Pemandu</label>
+                                                <input type="number" name="phoneNumber" class="form-control"
+                                                    id="phoneNumber" placeholder="Masukan No Handphone Pemandu"
+                                                    required>
+                                           
+                                                <label for="password">Masukan Password Pemandu</label>
+                                                <input type="text" name="password" class="form-control"
+                                                    id="password" placeholder="Masukan Password Pemandu" required>
+
+
+                                                <label for="confirmPassword">Masukan Konfrimasi Password Pemandu</label>
+                                                <input type="text" name="confirmPassword" class="form-control"
+                                                    id="confirmPassword" placeholder="Masukan Password Pemandu" required>
+                                          
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+                <!-- /.content -->
+            </div>
+
+            <%- include ../../partial/footer.ejs %>
+                <%- include ../../partial/js.ejs %>

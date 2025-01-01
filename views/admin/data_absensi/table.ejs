@@ -1,0 +1,49 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">Data Absensi Training</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="example1" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama Peserta</th>
+                        <th>Asal Cabang</th>
+                        <% console.log('materi>>>>>>>>>',pesertaWithAbsensi) %>
+                        <% if (pesertaWithAbsensi[0]?.materiStatus) { %>
+                            <% pesertaWithAbsensi[0].materiStatus.forEach((materi) => { %>
+                              <th><%= materi.materiName %></th>
+                            <% }) %>
+                          <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0; i < pesertaWithAbsensi.length; i++) { %>
+                      <tr>
+                        <th>
+                          <%= i + 1 %>
+                        </th>
+                        <th>
+                          <%= pesertaWithAbsensi[i].name || 'Tidak ditemukan' %>
+                        </th>
+                       
+                        <th>
+                          <%= pesertaWithAbsensi[i].asal_cabang || '-' %>
+                        </th>
+                        <% pesertaWithAbsensi[i].materiStatus.forEach((materi) => { %>
+                          <th>
+                            <%= materi.status || '-' %>
+                          </th>
+                        <% }); %>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                  
+            </table>
+        </div>
+
+    </div>
+    <!-- /.card-body -->
+</div>

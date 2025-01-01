@@ -1,0 +1,80 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Data Pemandu Training</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="example1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>No Telepon</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i = 0; i < user.length; i++) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= user[i].name %></td>
+                        <td><%= user[i].email %></td>
+                        <td><%= user[i].phoneNumber %></td>
+                        <td>
+                            <% if(user[i].status === 'Y') { %>
+                                <span class="badge badge-success">
+                                    Aktif
+                                </span>
+                            <% } else { %>
+                                <span class="badge badge-danger">
+                                    Tidak Aktif
+                                </span>
+                            <% } %>
+                        </td>
+                     
+                        <td>
+                            <form action="/user/status/<%= user[i]._id %>?_method=PUT" style="display: inline-block;">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-folder"></i>
+                                <% if(user[i].status === 'Y') { %>
+                                    Matikan
+                                <% } else { %>
+                                    Hidupkan
+                                <% } %>
+                            </button>
+                        </form>
+                        <a href="/user/edit/<%= user[i]._id %>" class="btn btn-info btn-sm">
+                            <i class="fas fa-pencil-alt"></i>
+                            Ubah
+                        </a>
+                        <form action="/user/delete/<%= user[i]._id %>?_method=DELETE" method="post">
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    $('#example1').DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+    });
+});
+</script>

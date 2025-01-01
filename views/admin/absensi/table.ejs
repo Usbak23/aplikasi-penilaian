@@ -1,0 +1,60 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Data Absensi Training</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table id="example1" class="table table-bordered table-hover">
+
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Materi</th>
+                        <th>Waktu Mulai</th>
+                        <th>Waktu Akhir</th>
+                        <th>Kode QR</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i=0; i < absensi.length; i++){ %>
+                        <tr>
+                            <td>
+                                <%= i + 1 %>
+                            </td>
+                            <td>
+                                <%= absensi[i].name_materi[0].materi %>
+                            </td>
+                            <td>
+                                <%=absensi[i].startTime%>
+                            </td>
+                            <td>
+                                <%=absensi[i].endTime %>
+                            </td>
+                            <td><img src="http://localhost:5000<%= absensi[i].barcodePath %>" alt="barcodePath"
+                                    style="width: 100px; height: 100px;" id="perview"
+                                    onclick="showModal('<%= absensi[i].barcodePath  %>')"></td>
+                            <td>
+                                <form action="/absensi/delete/<%= absensi[i]._id %>?_method=DELETE" method="post">
+                                    <a href="/absensi/edit/<%= absensi[i]._id %>" class="btn btn-info btn-sm">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Ubah
+                                    </a>
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div id="imageModal" class="modal" onclick="hideModal()">
+        <img id="modalImage" src="" alt="Large Image">
+    </div>
+</div>
