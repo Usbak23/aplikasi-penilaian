@@ -11,7 +11,8 @@ module.exports = {
       res.render("admin/category/view_category", {
         category,
         alert,
-        // name : req.session.user.name,
+        name : req.session.user.name,
+        title : 'Halaman Kategori',
         // role : req.session.user.role,
       });
     } catch (err) {
@@ -24,7 +25,7 @@ module.exports = {
   viewCreate: async (req, res) => {
     try {
       res.render("admin/category/create", {
-        // name : req.session.user.name,
+        name : req.session.user.name,
         // role : req.session.user.role,
         title : 'Halaman Tambah Bank'
       });
@@ -46,7 +47,7 @@ module.exports = {
       req.flash("alertStatus", "success");
 
       res.redirect("/category");
-      console.log(Category);
+
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
@@ -62,7 +63,7 @@ module.exports = {
 
       res.render("admin/category/edit", {
         category,
-        // name : req.session.user.name,
+        name : req.session.user.name,
         // role : req.session.user.role,
         title : 'Halaman Ubah Kategori'
       });

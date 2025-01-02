@@ -12,10 +12,10 @@ module.exports = {
       if (req.session.user === null || req.session.user === undefined) {
         res.render("admin/users/view_signin", {
           alert,
-        //   title: "Halaman Signin",
+          title: "Halaman Signin",
         });
       } else {
-        res.redirect("/");
+        res.redirect("/dashboard");
       }
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
@@ -27,16 +27,17 @@ module.exports = {
     try {
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
-  
+
       const alert = { message: alertMessage, status: alertStatus };
-  
+
       if (req.session.user === null || req.session.user === undefined) {
         res.render("admin/users/view_register", {
           alert,
-          // title: "Halaman Registrasi", // Jika ada penggunaan judul halaman
+          title: "Halaman Registrasi",
+
         });
       } else {
-        res.redirect("/dashboard");
+        res.redirect("/");
       }
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
@@ -44,7 +45,7 @@ module.exports = {
       res.redirect("/");
     }
   },
-  
+
   actionRegister: async (req, res) => {
     try {
       const { name, email, password, confirmPassword, phoneNumber } = req.body;
@@ -134,47 +135,53 @@ module.exports = {
     }
   },
 
-  index: async (req,res) => {
+  index: async (req, res) => {
     try {
       const alertMessage = req.flash("alertMessage");
-      const alertStatus =req.flash("alertStatus");
+      const alertStatus = req.flash("alertStatus");
 
-      const alert ={message: alertMessage, status: alertStatus};
+      const alert = { message: alertMessage, status: alertStatus };
       const user = await User.find();
       res.render("admin/users/view_mot", {
         user,
-        alert
-      })
-    } catch (err) {
-      req.flash("alertMessage", `${err.message}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/mot")
-    };
-},
-  viewCreate: (req,res) => {
-    try {
-      res.render("admin/users/create");
+        alert,
+        name: req.session.user.name,
+        title: "Halaman Master of Training",
+      });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/mot");
     }
   },
-  actionCreate: async (req,res) => {
+  viewCreate: (req, res) => {
     try {
-      const {name, email, phoneNumber, password, confirmPassword} = req.body;
-      let pemandu = await User ({
-        name, 
+      res.render("admin/users/create",{
+        name: req.session.user.name,
+        title: "Halaman Tambah Master of Training",
+      },
+
+      );
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/mot");
+    }
+  },
+  actionCreate: async (req, res) => {
+    try {
+      const { name, email, phoneNumber, password, confirmPassword } = req.body;
+      let pemandu = await User({
+        name,
         email,
         phoneNumber,
         password,
-        confirmPassword
+        confirmPassword,
       });
       await pemandu.save();
       req.flash("alertMessage", "Berhasil Tambah Pemandu");
       req.flash("alertStatus", "success");
       res.redirect("/mot");
-
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");

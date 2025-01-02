@@ -8,9 +8,9 @@ const {
   actionEdit,
   actionDelete,
 } = require("./controller");
-// const {isLoginAdministrator} =require('../middleware/auth');
+const {isLoginAdmin} =require('../middleware/auth');
 
-// router.use(isLoginAdministrator);
+router.use(isLoginAdmin);
 
 router.get("/", index);
 router.get("/create", viewCreate);

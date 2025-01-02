@@ -15,7 +15,7 @@ module.exports = {
 
       // Ambil semua materi absensi
       const materiList = await Absensi.find().populate("name_materi", "materi");
-      // console.log('Materi List=-=------->>>>', materiList)
+
 
       // Ambil data absensi recap
       const data_absensi = await RecapAbsensi.find()
@@ -36,7 +36,7 @@ module.exports = {
 
           return {
             materiName: materi.name_materi[0].materi,
-            status: absensi ? "Hadir" : "Hadir",
+            status: absensi ? "Hadir" : "Tidak Hadir",
           };
         });
 
@@ -52,6 +52,7 @@ module.exports = {
       res.render("admin/data_absensi/view_data_absensi", {
         pesertaWithAbsensi, // Data peserta dengan materi dan status hadir
         alert,
+        name : req.session.user.name,
         title: "Halaman Data Absensi Peserta Training",
       });
     } catch (err) {

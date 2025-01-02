@@ -2,3 +2,6 @@
 /.env
 /index.html
 /test
+/.gitignore
+/.github
+/tests

@@ -1,8 +1,8 @@
-
 const XLSX = require("xlsx");
 const Peserta = require("./model");
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
+const { title } = require("process");
 
 module.exports = {
   index: async (req, res) => {
@@ -15,18 +15,23 @@ module.exports = {
       res.render("admin/peserta/view_peserta", {
         peserta,
         alert,
+        name: req.session.user.name,
+        title: "Halaman Peserta",
       });
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
   },
   viewCreate: async (req, res) => {
     try {
-      res.render("admin/peserta/create", {});
+      res.render("admin/peserta/create", {
+        title: "Halaman Tambah Peserta",
+        name: req.session.user.name,
+      });
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
@@ -46,7 +51,7 @@ module.exports = {
       req.flash("alertStatus", "success");
       res.redirect("/peserta");
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
@@ -58,18 +63,23 @@ module.exports = {
       const peserta = await Peserta.findOne({ _id: id });
       res.render("admin/peserta/edit", {
         peserta,
+        title: "Halaman Ubah Peserta",
+        name: req.session.user.name,
       });
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
   },
   viewUpload: async (req, res) => {
     try {
-      res.render("admin/peserta/upload", {});
+      res.render("admin/peserta/upload", {
+        title: "Halaman Ubah File Excel",
+        name: req.session.user.name,
+      });
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
@@ -80,28 +90,28 @@ module.exports = {
       if (!req.file) {
         throw new Error("File Excel tidak ditemukan. Silakan unggah file.");
       }
-  
+
       // Lokasi sementara file Excel
       const tmpPath = req.file.path;
-  
+
       // Baca file Excel
       const workbook = XLSX.readFile(tmpPath);
       const sheetName = workbook.SheetNames[0]; // Ambil sheet pertama
       const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]); // Konversi sheet ke JSON
-  
+
       // Validasi data dari Excel
       if (!sheetData || sheetData.length === 0) {
         throw new Error("File Excel kosong atau tidak valid.");
       }
-  
+
       // Proses setiap baris data
       for (let row of sheetData) {
         const { name, email, no_Hp, asal_komisariat, asal_cabang } = row;
-  
+
         if (!name || !email || !no_Hp || !asal_komisariat || !asal_cabang) {
           throw new Error("Data dalam file Excel tidak lengkap.");
         }
-  
+
         // Simpan data ke database
         const peserta = new Peserta({
           name,
@@ -110,15 +120,18 @@ module.exports = {
           asal_komisariat,
           asal_cabang,
         });
-  
+
         await peserta.save();
       }
-  
+
       // Hapus file sementara setelah diproses
       fs.unlinkSync(tmpPath);
-  
+
       // Kirim pesan sukses
-      req.flash("alertMessage", "Berhasil menambahkan peserta dari file Excel.");
+      req.flash(
+        "alertMessage",
+        "Berhasil menambahkan peserta dari file Excel."
+      );
       req.flash("alertStatus", "success");
       res.redirect("/peserta");
     } catch (err) {
@@ -127,7 +140,7 @@ module.exports = {
       req.flash("alertMessage", err.message);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
-    };
+    }
   },
   actionEdit: async (req, res) => {
     try {
@@ -144,24 +157,24 @@ module.exports = {
       req.flash("alertStatus", "success");
       res.redirect("/peserta");
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
   },
 
-  actionDelete: async(req, res) => {
+  actionDelete: async (req, res) => {
     try {
-      const {id} =req.params;
+      const { id } = req.params;
 
-      await Peserta.findOneAndDelete({_id: id});
+      await Peserta.findOneAndDelete({ _id: id });
       req.flash("alertMessage", "Berhasil Hapus Peserta");
       req.flash("alertStatus", "success");
       res.redirect("/peserta");
     } catch (err) {
-       req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
-  }
+  },
 };

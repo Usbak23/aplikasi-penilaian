@@ -12,7 +12,7 @@ module.exports = {
       const materi = await Materi.countDocuments()
       const absensi = await Absensi.countDocuments()
       res.render('admin/dashboard/view_dashboard', {
-        // name: req.session.user.name,
+        name: req.session.user.name,
         // role: req.session.user.role,
         title: 'Halaman Dashboard',
         count: {

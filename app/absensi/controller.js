@@ -15,16 +15,12 @@ module.exports = {
       const absensi = await Absensi.find()
       .populate('name_materi', 'materi');
 
-      console.log("absen===>>>>", absensi);
-
-      
-
 
       res.render("admin/absensi/view_absen", {
         absensi,
         alert,
-        // name_materi: req.session.user.name_materi,
-        // role: req.session.user.role,
+        name: req.session.user.name,
+        // role: req.session.user,
         title: "Halaman Absensi",
       });
     } catch (err) {
@@ -37,7 +33,9 @@ module.exports = {
     try {
       const materiList = await Materi.find(); // Mengambil semua data dari model Materi
       res.render("admin/absensi/create", {
-        materiList, // Mengirim data materi ke view
+        materiList, 
+        title: "Halaman Tambah Absensi",
+        name: req.session.user.name,
         alert: {
           message: req.flash("alertMessage"),
           status: req.flash("alertStatus"),

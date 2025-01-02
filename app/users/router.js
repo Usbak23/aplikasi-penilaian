@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { viewSignin, actionSignin, actionLogout, viewRegister, actionRegister, index, viewCreate, actionCreate } = require('./controller')
+// const {isLoginAdmin} =require('../middleware/auth');
 
+// router.use(isLoginAdmin);
 /* GET home page. */
 router.get('/', viewSignin);
 router.post('/', actionSignin);

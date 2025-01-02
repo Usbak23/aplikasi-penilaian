@@ -10,12 +10,12 @@ const {
   actionDelete,
   viewUpload,
 } = require("./controller");
-// const {isLoginAdministrator} =require('../middleware/auth')
+const {isLoginAdmin} =require('../middleware/auth')
 
 const multer = require('multer')
 const os = require('os')
 
-// router.use(isLoginAdministrator);
+router.use(isLoginAdmin);
 router.get("/", index);
 router.get("/create", viewCreate);
 router.post("/create", actionCreate);

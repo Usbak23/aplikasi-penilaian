@@ -11,7 +11,7 @@ module.exports = {
       res.render("admin/materi/view_materi", {
         materi,
         alert,
-        // name : req.session.user.name,
+        name : req.session.user.name,
         // role : req.session.user.role,
         title : 'Halaman Materi'
       });
@@ -25,7 +25,8 @@ module.exports = {
   viewCreate: async (req, res) => {
     try {
       res.render("admin/materi/create", {
-        // name : req.session.user.name,
+        name : req.session.user.name,
+        title : 'Halaman Tambah Materi',
         // role : req.session.user.role,
       });
     } catch (err) {
@@ -59,7 +60,8 @@ module.exports = {
       res.render("admin/materi/edit", {
         materi,
         name : req.session.user.name,
-        role : req.session.user.role,
+        title : 'Halaman Ubah Materi',
+        // role : req.session.user.role,
       });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
