@@ -171,12 +171,21 @@ module.exports = {
   actionCreate: async (req, res) => {
     try {
       const { name, email, phoneNumber, password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        req.flash(
+          "alertMessage",
+          "Kata sandi dan konfirmasi kata sandi tidak cocok."
+        );
+        req.flash("alertStatus", "danger");
+        return res.redirect("/register");
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
       let pemandu = await User({
         name,
         email,
         phoneNumber,
-        password,
-        confirmPassword,
+        password : hashedPassword,
+
       });
       await pemandu.save();
       req.flash("alertMessage", "Berhasil Tambah Pemandu");
