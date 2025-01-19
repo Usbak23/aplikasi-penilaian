@@ -3,6 +3,7 @@ const Peserta = require('../peserta/model');
 const RecapAbsensi = require('./model');
 const Materi = require('../materi/model');
 
+
 module.exports = {
   index: async (req, res) => {
     try {
@@ -63,8 +64,31 @@ module.exports = {
     }
   },
 
+  viewScan : async (req, res) => {
+    try {
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = { message: alertMessage, status: alertStatus };
+      const pesertaName = req.session.user.name;
+      res.render("peserta/scan_barcode/scan", {
+        title: "Halaman Scan Absensi Peserta Training",
+        name: req.session.user.name,
+        alert,
+        pesertaId: req.session.user._id,
+        pesertaName
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/");
+    }
+  },
   scan: async (req, res) => {
     try {
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = { message: alertMessage, status: alertStatus };
+
       const { barcodePath, pesertaId } = req.body;
 
       // Cari materi berdasarkan barcodePath
@@ -112,4 +136,5 @@ module.exports = {
       res.redirect("/recap_absensi");
     }
   },
+
 };

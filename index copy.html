@@ -1,0 +1,24 @@
+<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<div id="qr-reader" style="width: 300px;"></div>
+<script>
+  const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+    console.log(`QR Code detected: ${decodedText}`);
+    // Kirim hasil ke server atau proses lainnya
+  };
+
+  const qrCodeErrorCallback = (errorMessage) => {
+    // Jika ada error dalam membaca QR Code
+    console.warn(errorMessage);
+  };
+
+  const html5QrCode = new Html5Qrcode("qr-reader");
+  html5QrCode.start(
+    { facingMode: "environment" }, // Kamera belakang
+    {
+      fps: 10, // Kecepatan frame
+      qrbox: { width: 250, height: 250 }, // Area pemindaian
+    },
+    qrCodeSuccessCallback,
+    qrCodeErrorCallback
+  );
+</script>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Barcode</title>
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <style>
+        #scanner-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #scanner {
+            width: 100%;
+            height: auto;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Halaman Scan Absensi Peserta Training</h1>
+    <p>Selamat datang, <%= name %>!</p>
+
+    <div id="scanner-container">
+        <video id="scanner"></video>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const codeReader = new ZXing.BrowserMultiFormatReader();
+        let scannerActive = true;
+
+        // Fungsi untuk memulai scanner
+        async function startScanner() {
+            try {
+                // Mulai memindai dari kamera default
+                codeReader.decodeFromVideoDevice(null, 'scanner', (result, err) => {
+                    if (result && scannerActive) {
+                        console.log("Barcode terdeteksi:", result.text);
+                        document.querySelector('#result').innerText = `Barcode terdeteksi: ${result.text}`;
+
+                        // Kirim data barcode dan pesertaId ke server
+                        const pesertaName = "<%= name %>"; // Ambil pesertaId dari session
+                        fetch('/recap_absensi/peserta/scan-barcode', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ 
+                                barcodePath: result.text, 
+                                pesertaName: pesertaName
+                            }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                scannerActive = false; // Nonaktifkan scanner setelah berhasil
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Terjadi kesalahan pada sistem.');
+                        });
+                    }
+
+                    if (err && !(err instanceof ZXing.NotFoundException)) {
+                        console.error("Error scanning barcode:", err);
+                    }
+                });
+
+                console.log("Scanner started successfully");
+            } catch (err) {
+                console.error("Error starting scanner:", err);
+                alert("Gagal memulai scanner. Pastikan kamera tersedia dan diizinkan.");
+            }
+        }
+
+        // Mulai scanner saat halaman dimuat
+        startScanner();
+    </script>
+</body>
+</html>

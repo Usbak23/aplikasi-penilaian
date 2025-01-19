@@ -13,7 +13,7 @@ module.exports = {
       const alert = { message: alertMessage, status: alertStatus };
 
       const absensi = await Absensi.find()
-      .populate('name_materi', 'materi');
+      .populate('name_materi','materi');
 
 
       res.render("admin/absensi/view_absen", {
@@ -81,6 +81,54 @@ module.exports = {
       console.log('absensi>>>>>>>>', absensi);
       await absensi.save();
       req.flash("alertMessage", "Berhasil Tambah Absensi");
+      req.flash("alertStatus", "success");
+      res.redirect("/absensi");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/absensi");
+    }
+  },
+
+  viewEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const absensi = await Absensi.findOne({ _id: id });
+      res.render("admin/absensi/edit", {
+        absensi,
+        name: req.session.user.name,
+        // role: req.session.user,
+        title: "Halaman Ubah Absensi",
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/absensi");
+    }
+  },
+  actionEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name_materi, startTime, endTime } = req.body;
+      const absensi = await Absensi.findOne({ _id: id });
+      absensi.name = name_materi;
+      absensi.startTime = startTime;
+      absensi.endTime = endTime;
+      await absensi.save();
+      req.flash("alertMessage", "Berhasil Ubah Absensi");
+      req.flash("alertStatus", "success");
+      res.redirect("/absensi");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/absensi");
+    }
+  },
+  actionDelete: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const absensi = await Absensi.findOneAndDelete({ _id: id });
+      req.flash("alertMessage", "Berhasil Hapus Absensi");
       req.flash("alertStatus", "success");
       res.redirect("/absensi");
     } catch (err) {

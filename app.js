@@ -10,6 +10,7 @@ const flash = require("connect-flash");
 
 
 const dashboardRouter = require("./app/dashboard/router");
+const dpRouter = require("./app/dashboard_peserta/router");
 const categoryRouter = require("./app/category/router");
 const pesertaRouter = require("./app/peserta/router");
 const materiRouter = require("./app/materi/router");
@@ -17,7 +18,9 @@ const usersRouter = require("./app/users/router");
 const motRouter = require("./app/users/router");
 const absensiRouter = require("./app/absensi/router");
 const dataAbsensi = require ("./app/data_absensi/router");
-
+const nilaiPsikomotorik = require("./app/nilai_psikomotorik/router");
+const nilaiKognitif = require("./app/nilai_kognitif/router");
+const pesertaMakalah = require("./app/makalah_peserta/router");
 
 const app = express();
 
@@ -53,8 +56,11 @@ app.use("/absensi", absensiRouter);
 app.use("/", usersRouter);
 app.use("/mot", motRouter);
 app.use("/dashboard", dashboardRouter);
+app.use("/dashboard-peserta", dpRouter);
 app.use("/recap_absensi", dataAbsensi);
-
+app.use("/nilai_psikomotorik", nilaiPsikomotorik);
+app.use("/nilai_kognitif", nilaiKognitif);
+app.use("/makalah_peserta", pesertaMakalah);
 
 
 

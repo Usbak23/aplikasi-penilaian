@@ -36,7 +36,7 @@
                         </td>
                      
                         <td>
-                            <form action="/user/status/<%= user[i]._id %>?_method=PUT" style="display: inline-block;">
+                            <form action="/mot/status/<%= user[i]._id %>?_method=PUT" style="display: inline-block;">
                             <button class="btn btn-primary btn-sm">
                                 <i class="fas fa-folder"></i>
                                 <% if(user[i].status === 'Y') { %>
@@ -46,11 +46,11 @@
                                 <% } %>
                             </button>
                         </form>
-                        <a href="/user/edit/<%= user[i]._id %>" class="btn btn-info btn-sm">
+                        <a href="/mot/edit/<%= user[i]._id %>" class="btn btn-info btn-sm">
                             <i class="fas fa-pencil-alt"></i>
                             Ubah
                         </a>
-                        <form action="/user/delete/<%= user[i]._id %>?_method=DELETE" method="post">
+                        <form action="/mot/delete/<%= user[i]._id %>?_method=DELETE" method="post">
                                 <button class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i>
                                     Hapus

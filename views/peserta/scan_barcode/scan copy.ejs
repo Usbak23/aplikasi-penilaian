@@ -1,0 +1,77 @@
+<%- include ../../partial_peserta/header.ejs %>
+  <%- include ../../partial_peserta/navbar.ejs %>
+    <%- include ../../partial_peserta/sidebar.ejs %>
+
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <%- include ../../partial_peserta/message.ejs %>
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h1><b>Scan Barcode Absensi</b></h1>
+                </div>
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Scan Barcode</li>
+                  </ol>
+                </div>
+              </div>
+          </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header text-center">
+                    <h3 class="card-title">Arahkan Kamera ke Barcode Absensi</h3>
+                  </div>
+                  <div class="card-body">
+                    <div id="interactive" class="viewport"></div>
+                    <form id="barcodeForm" method="POST" action="/peserta/recap_absensi/scan">
+                      <input type="hidden" name="barcodePath" id="barcodePath">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <script>
+        // Inisialisasi QuaggaJS
+        Quagga.init(
+          {
+            inputStream: {
+              name: "Live",
+              type: "LiveStream",
+              target: document.querySelector("#interactive"), // Target video kamera
+            },
+            decoder: {
+              readers: ["code_128_reader"], // Format barcode
+            },
+          },
+          function (err) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            Quagga.start();
+          }
+        );
+
+        // Event saat barcode terdeteksi
+        Quagga.onDetected(function (data) {
+          const code = data.codeResult.code;
+          document.getElementById("barcodePath").value = code; // Isi hidden input
+          document.getElementById("barcodeForm").submit(); // Submit form otomatis
+        });
+      </script>
+
+      <%- include ../../partial_peserta/footer.ejs %>
+        <%- include ../../partial_peserta/js.ejs %>

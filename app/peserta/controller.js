@@ -3,6 +3,7 @@ const Peserta = require("./model");
 const fs = require("fs");
 const path = require("path");
 const { title } = require("process");
+const bcrypt = require ("bcryptjs");
 
 module.exports = {
   index: async (req, res) => {
@@ -38,13 +39,21 @@ module.exports = {
   },
   actionCreate: async (req, res) => {
     try {
-      const { name, email, no_Hp, asal_komisariat, asal_cabang } = req.body;
+      const { name, email, no_Hp, asal_komisariat, asal_cabang, password, confrimPassword } = req.body;
+      if (password !== confrimPassword) {
+        req.flash (
+          "alertMessage",
+          "Kata Sandi dan konfirmasi Kata Sandi tidak cocok"
+        )
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
       let peserta = await Peserta({
         name,
         email,
         no_Hp,
         asal_komisariat,
         asal_cabang,
+        password : hashedPassword,
       });
       await peserta.save();
       req.flash("alertMessage", "Berhasil Tambah Peserta");
@@ -106,11 +115,12 @@ module.exports = {
 
       // Proses setiap baris data
       for (let row of sheetData) {
-        const { name, email, no_Hp, asal_komisariat, asal_cabang } = row;
+        const { name, email, no_Hp, asal_komisariat, asal_cabang, password } = row;
 
-        if (!name || !email || !no_Hp || !asal_komisariat || !asal_cabang) {
+        if (!name || !email || !no_Hp || !asal_komisariat || !asal_cabang || !password) {
           throw new Error("Data dalam file Excel tidak lengkap.");
         }
+        const hashedPassword = await bcrypt.hash(password,10)
 
         // Simpan data ke database
         const peserta = new Peserta({
@@ -119,6 +129,7 @@ module.exports = {
           no_Hp,
           asal_komisariat,
           asal_cabang,
+          password : hashedPassword
         });
 
         await peserta.save();
@@ -176,5 +187,9 @@ module.exports = {
       req.flash("alertStatus", "danger");
       res.redirect("/peserta");
     }
+  },
+  actionLogout: (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
   },
 };

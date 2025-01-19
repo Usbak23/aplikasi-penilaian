@@ -13,7 +13,7 @@ module.exports = {
       const absensi = await Absensi.countDocuments()
       res.render('admin/dashboard/view_dashboard', {
         name: req.session.user.name,
-        // role: req.session.user.role,
+        role: req.session.user.role,
         title: 'Halaman Dashboard',
         count: {
           user,
@@ -26,5 +26,17 @@ module.exports = {
       console.log(err)
 
     }
+  },
+
+  viewDashboard: async (req, res) => {
+    try {
+      res.render('peserta/dashboard/view_dashboard', {
+        name: req.session.user.name,
+        // role: req.session.user.role,
+        title: 'Halaman Dashboard',
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
-}
+};

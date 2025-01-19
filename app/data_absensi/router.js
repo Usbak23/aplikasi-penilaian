@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { index,   } = require("./controller");
-const {isLoginAdmin} =require('../middleware/auth');
+const { index,  scan, viewScan } = require("./controller");
+const {isLoginAdmin, isLoginPeserta} =require('../middleware/auth');
 
-router.use(isLoginAdmin);
-router.get("/", index);
-// router.get("/create", viewCreate);
+
+router.get("/",isLoginAdmin, index);
+router.post("/peserta/scan-barcode", isLoginPeserta, scan);
+router.get("/peserta/scan-barcode", isLoginPeserta, viewScan);
 // router.post("/create", actionCreate);
 
 module.exports = router;

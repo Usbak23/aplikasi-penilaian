@@ -1,5 +1,6 @@
 const User = require("./model");
 const bcrypt = require("bcryptjs");
+const Peserta = require("../peserta/model");
 
 module.exports = {
   viewSignin: async (req, res) => {
@@ -80,8 +81,8 @@ module.exports = {
         email,
         password: hashedPassword,
         phoneNumber,
-        role: "admininstrator", // Hanya mendaftar sebagai administrator
-        status: "", // Status aktif
+        role: "administrator", // Hanya mendaftar sebagai administrator
+        status: "Y", // Status aktif
       });
 
       await user.save();
@@ -96,44 +97,99 @@ module.exports = {
     }
   },
 
-  actionSignin: async (req, res) => {
+  // actionSignin: async (req, res) => {
+  //   try {
+  //     const { email, password } = req.body;
+  //     const check = await User.findOne({ email: email });
+
+  //     if (check) {
+  //       if (check.status === "Y") {
+  //         const checkPassword = await bcrypt.compare(password, check.password);
+  //         if (checkPassword) {
+  //           req.session.user = {
+  //             id: check._id,
+  //             email: check.email,
+  //             status: check.status,
+  //             name: check.name,
+  //             role: check.role,
+  //           };
+  //           res.redirect("/dashboard");
+  //         } else {
+  //           req.flash("alertMessage", `Kata Sandi Yang Anda Masukan Salah`);
+  //           req.flash("alertStatus", "danger");
+  //           res.redirect("/");
+  //         }
+  //       } else {
+  //         req.flash("alertMessage", `Mohon Maaf Status Anda Belum Aktif`);
+  //         req.flash("alertStatus", "danger");
+  //         res.redirect("/");
+  //       }
+  //     } else {
+  //       req.flash("alertMessage", `Email Yang Anda Masukan Tidak Terdaftar`);
+  //       req.flash("alertStatus", "danger");
+  //       res.redirect("/");
+  //     }
+  //   } catch (err) {
+  //     req.flash("alertMessage", `${err.message}`);
+  //     req.flash("alertStatus", "danger");
+  //     res.redirect("/");
+  //   }
+  // },
+  actionSignin : async (req, res) => {
     try {
       const { email, password } = req.body;
-      const check = await User.findOne({ email: email });
-
+  
+      // Cari pengguna di model User
+      let check = await User.findOne({ email: email });
+      let isPeserta = false;
+  
+      // Jika tidak ditemukan di User, cari di model Peserta
+      if (!check) {
+        check = await Peserta.findOne({ email: email });
+        isPeserta = !!check; // Tandai bahwa pengguna adalah peserta
+      }
+  
       if (check) {
-        if (check.status === "Y") {
+        // Jika pengguna adalah peserta, lewati pemeriksaan status
+        if (isPeserta || check.status === "Y") {
           const checkPassword = await bcrypt.compare(password, check.password);
           if (checkPassword) {
             req.session.user = {
               id: check._id,
               email: check.email,
-              status: check.status,
               name: check.name,
-              role: check.role,
+              role: isPeserta ? "peserta" : check.role, // Tetapkan role
             };
-            res.redirect("/dashboard");
+  
+            // Redirect berdasarkan role
+            if (isPeserta) {
+              res.redirect("/dashboard-peserta");
+            } else {
+              res.redirect("/dashboard");
+            }
           } else {
-            req.flash("alertMessage", `Kata Sandi Yang Anda Masukan Salah`);
+            req.flash("alertMessage", "Kata Sandi Yang Anda Masukkan Salah");
             req.flash("alertStatus", "danger");
             res.redirect("/");
           }
         } else {
-          req.flash("alertMessage", `Mohon Maaf Status Anda Belum Aktif`);
+          req.flash("alertMessage", "Mohon Maaf Status Anda Belum Aktif");
           req.flash("alertStatus", "danger");
           res.redirect("/");
         }
       } else {
-        req.flash("alertMessage", `Email Yang Anda Masukan Tidak Terdaftar`);
+        req.flash("alertMessage", "Email Yang Anda Masukkan Tidak Terdaftar");
         req.flash("alertStatus", "danger");
         res.redirect("/");
       }
     } catch (err) {
-      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertMessage", `Error: ${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/");
     }
   },
+  
+  
 
   index: async (req, res) => {
     try {

@@ -27,7 +27,7 @@ module.exports = {
       res.render("admin/category/create", {
         name : req.session.user.name,
         // role : req.session.user.role,
-        title : 'Halaman Tambah Bank'
+        title : 'Halaman Tambah Kategori'
       });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);

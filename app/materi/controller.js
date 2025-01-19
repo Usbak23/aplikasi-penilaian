@@ -5,7 +5,6 @@ module.exports = {
     try {
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
-
       const alert = { message: alertMessage, status: alertStatus };
       const materi = await Materi.find();
       res.render("admin/materi/view_materi", {

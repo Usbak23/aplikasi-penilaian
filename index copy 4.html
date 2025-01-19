@@ -1,0 +1,39 @@
+<form action="/nilai_psikomotorik/create" method="POST">
+    <div class="form-group">
+      <label for="pesertaId">Peserta</label>
+      <select name="pesertaId" id="pesertaId" required>
+        <option value="">Pilih Peserta</option>
+        <% peserta.forEach(function(peserta) { %>
+          <option value="<%= peserta._id %>"><%= peserta.name %> - <%= peserta.asal_cabang %></option>
+        <% }); %>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label for="materiId">Materi</label>
+      <select name="materiId" id="materiId" required>
+        <option value="">Pilih Materi</option>
+        <% materi.forEach(function(materi) { %>
+          <option value="<%= materi._id %>"><%= materi.name %></option>
+        <% }); %>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label for="nilaiReaksi">Nilai Reaksi</label>
+      <input type="number" name="nilaiReaksi" id="nilaiReaksi" required min="0" max="100">
+    </div>
+  
+    <div class="form-group">
+      <label for="nilaiAdaptasi">Nilai Adaptasi</label>
+      <input type="number" name="nilaiAdaptasi" id="nilaiAdaptasi" required min="0" max="100">
+    </div>
+  
+    <div class="form-group">
+      <label for="nilaiPersepsi">Nilai Persepsi</label>
+      <input type="number" name="nilaiPersepsi" id="nilaiPersepsi" required min="0" max="100">
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Simpan Nilai</button>
+  </form>
+  

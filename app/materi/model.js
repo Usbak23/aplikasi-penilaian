@@ -7,11 +7,11 @@ let materiSchema = mongoose.Schema({
     },
     narasumber: {
         type : String,
-        require: ['Narasumber Harus diisi']
+        require: [true,'Narasumber Harus diisi']
     },
     judulMateri:{
         type: String,
-        require: ['Judul Materi Harus diisi']
+        require: [true,'Judul Materi Harus diisi']
     }
 })
 

@@ -1,6 +1,15 @@
 module.exports = {
     isLoginAdmin: (req, res, next) => {
-        if (req.session.user === null || req.session.user === undefined) {
+        if (req.session.user === null || req.session.user === undefined || req.session.user.role !== "administrator") {
+            req.flash("alertMessage", `Mohon Maaf Sesi Anda Telah Habis, Silahkan Login Kembali`);
+            req.flash("alertStatus", "danger");
+            res.redirect("/");
+        } else{
+            next()
+        }
+    },
+    isLoginPeserta: (req, res, next) => {
+        if (req.session.user === null || req.session.user === undefined || req.session.user.role !== "peserta") {
             req.flash("alertMessage", `Mohon Maaf Sesi Anda Telah Habis, Silahkan Login Kembali`);
             req.flash("alertStatus", "danger");
             res.redirect("/");
