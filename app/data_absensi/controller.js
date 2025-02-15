@@ -64,77 +64,75 @@ module.exports = {
     }
   },
 
-  viewScan : async (req, res) => {
+  viewScan :async (req, res) => {
     try {
-      const alertMessage = req.flash("alertMessage");
-      const alertStatus = req.flash("alertStatus");
-      const alert = { message: alertMessage, status: alertStatus };
-      const pesertaName = req.session.user.name;
-      res.render("peserta/scan_barcode/scan", {
-        title: "Halaman Scan Absensi Peserta Training",
-        name: req.session.user.name,
-        alert,
-        pesertaId: req.session.user._id,
-        pesertaName
-      });
+        const alertMessage = req.flash("alertMessage");
+        const alertStatus = req.flash("alertStatus");
+        const alert = { message: alertMessage, status: alertStatus };
+        const pesertaName = req.session.user.name;
+        res.render("peserta/scan_barcode/scan", {
+            title: "Halaman Scan Absensi Peserta Training",
+            name: req.session.user.name,
+            alert,
+            pesertaId: req.session.user._id, // Mengambil ID peserta dari session
+            pesertaName
+        });
     } catch (err) {
-      req.flash("alertMessage", `${err.message}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/");
+        req.flash("alertMessage", `${err.message}`);
+        req.flash("alertStatus", "danger");
+        res.redirect("/");
     }
-  },
+},
   scan: async (req, res) => {
     try {
-      const alertMessage = req.flash("alertMessage");
-      const alertStatus = req.flash("alertStatus");
-      const alert = { message: alertMessage, status: alertStatus };
+      const { qrData, pesertaId } = req.body;
 
-      const { barcodePath, pesertaId } = req.body;
+      if (!qrData || !pesertaId) {
+        throw new Error("Data QR Code atau ID Peserta tidak ditemukan!");
+      }
 
-      // Cari materi berdasarkan barcodePath
-      const absensi = await Absensi.findOne({ barcodePath });
+      // Parse QR data
+      const { name_materi, startTime, endTime } = JSON.parse(qrData);
+
+      // Cari absensi berdasarkan data QR Code
+      const absensi = await Absensi.findOne({
+        "name_materi": name_materi,
+        "startTime": startTime,
+        "endTime": endTime,
+      });
+
       if (!absensi) {
-        req.flash("alertMessage", "barcode tidak valid!");
-        req.flash("alertStatus", "danger");
-        return res.redirect("/recap_absensi");
+        throw new Error("Absensi tidak ditemukan atau QR Code tidak valid!");
       }
 
-      // Pastikan peserta valid
-      const peserta = await Peserta.findById(pesertaId);
-      if (!peserta) {
-        req.flash("alertMessage", "Peserta tidak ditemukan!");
-        req.flash("alertStatus", "danger");
-        return res.redirect("/recap_absensi");
-      }
-
-      // Cek apakah peserta sudah hadir
-      const existingRecap = await RecapAbsensi.findOne({
-        namePeserta: peserta._id,
+      // Cek apakah peserta sudah tercatat di recap
+      const isAlreadyPresent = await RecapAbsensi.findOne({
+        namePeserta: pesertaId,
         nameAbsensi: absensi._id,
       });
 
-      if (existingRecap) {
-        req.flash("alertMessage", "Peserta sudah absen!");
+      if (isAlreadyPresent) {
+        req.flash("alertMessage", "Anda sudah tercatat hadir sebelumnya!");
         req.flash("alertStatus", "info");
-        return res.redirect("/recap_absensi");
+        return res.redirect("/peserta/scan-barcode");
       }
 
-      // Simpan kehadiran
-      const newRecap = new RecapAbsensi({
-        namePeserta: peserta._id,
+      // Simpan ke recap absensi
+      const recapAbsensi = new RecapAbsensi({
+        namePeserta: pesertaId,
         nameAbsensi: absensi._id,
       });
-      await newRecap.save();
 
-      req.flash("alertMessage", "Absensi berhasil dilakukan!");
+      await recapAbsensi.save();
+
+      req.flash("alertMessage", "Berhasil mencatat kehadiran!");
       req.flash("alertStatus", "success");
-      res.redirect("/recap_absensi");
+      res.redirect("/peserta/scan-barcode");
     } catch (err) {
-      console.log("Error message:", err);
-      req.flash("alertMessage", `${err.message}`);
+      console.error(err.message);
+      req.flash("alertMessage", err.message);
       req.flash("alertStatus", "danger");
-      res.redirect("/recap_absensi");
+      res.redirect("/peserta/scan-barcode");
     }
   },
-
 };

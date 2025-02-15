@@ -3,93 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scan Barcode</title>
+    <title>Scan QR Code Absensi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://unpkg.com/@zxing/library@latest"></script>
     <style>
-        #scanner-container {
+        #video {
             width: 100%;
             max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        #scanner {
-            width: 100%;
             height: auto;
-        }
-        #result {
-            margin-top: 20px;
-            font-size: 1.2em;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <h1>Halaman Scan Absensi Peserta Training</h1>
-    <p>Selamat datang, <%= name %>!</p>
+    <div class="container mt-5">
+        <h1 class="text-center">Scan QR Code Absensi</h1>
 
-    <div id="scanner-container">
-        <video id="scanner"></video>
-        <div id="result"></div>
+        <% if (alert.message) { %>
+            <div class="alert alert-<%= alert.status %>">
+                <%= alert.message %>
+            </div>
+        <% } %>
+
+        <div class="text-center">
+            <video id="video"></video>
+            <br>
+            <button id="start" class="btn btn-primary mt-3">Mulai Scan</button>
+        </div>
     </div>
 
     <script>
-        const codeReader = new ZXing.BrowserMultiFormatReader();
-        let scannerActive = true;
+        const codeReader = new ZXing.BrowserQRCodeReader();
+        const videoElement = document.getElementById('video');
 
-        // Fungsi untuk memulai scanner
-        async function startScanner() {
-            try {
-                // Mulai memindai dari kamera default
-                codeReader.decodeFromVideoDevice(null, 'scanner', (result, err) => {
-                    if (result && scannerActive) {
-                        console.log("Barcode terdeteksi:", result.text);
-                        document.querySelector('#result').innerText = `Barcode terdeteksi: ${result.text}`;
+        document.getElementById('start').addEventListener('click', () => {
+            codeReader.decodeFromVideoDevice(null, videoElement, (result, err) => {
+                if (result) {
+                    console.log(result);
+                    // Kirim data ke server
+                    const qrData = result.text; // Data QR Code yang dipindai
+                    const pesertaId = '<%= pesertaId %>'; // Ambil ID peserta dari variabel EJS
 
-                        // Kirim data barcode dan pesertaId ke server
-                        const pesertaName = "<%= name %>"; // Ambil pesertaId dari session
-                        fetch('/recap_absensi/peserta/scan-barcode', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ 
-                                barcodePath: result.text, 
-                                pesertaName: pesertaName
-                            }),
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                alert(data.message);
-                                scannerActive = false; // Nonaktifkan scanner setelah berhasil
-                            } else {
-                                alert(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Terjadi kesalahan pada sistem.');
-                        });
-                    }
-
-                    if (err && !(err instanceof ZXing.NotFoundException)) {
-                        console.error("Error scanning barcode:", err);
-                    }
-                });
-
-                console.log("Scanner started successfully");
-            } catch (err) {
-                console.error("Error starting scanner:", err);
-                alert("Gagal memulai scanner. Pastikan kamera tersedia dan diizinkan.");
-            }
-        }
-
-        // Mulai scanner saat halaman dimuat
-        startScanner();
+                    fetch('/recap_absensi/peserta/scan-barcode', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ qrData, pesertaId }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        // Reload halaman atau lakukan tindakan lain setelah berhasil
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+                if (err && !(err instanceof ZXing.NotFoundException)) {
+                    console.error(err);
+                }
+            });
+        });
     </script>
 </body>
 </html>

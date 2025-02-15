@@ -33,6 +33,7 @@
     "nodemon": "^3.1.7",
     "path": "^0.12.7",
     "qrcode": "^1.5.4",
+    "supertest-session": "^5.0.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

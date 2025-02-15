@@ -24,6 +24,12 @@ const pesertaMakalah = require("./app/makalah_peserta/router");
 
 const app = express();
 
+app.post("/mock-login", (req, res) => {
+  req.session.user = { name: "Admin", role: "administrator" };
+  res.status(200).send("Login successful");
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -32,7 +38,7 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    cookie: { },
+    cookie: { secure: false },
   })
 );
 app.use(flash());
