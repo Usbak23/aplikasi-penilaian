@@ -3,7 +3,12 @@ const { urlDb } = require('../config');
 
 
 
-mongoose.connect(urlDb);
+mongoose.connect(urlDb,
+                 {
+                    tlsAllowInvalidCertificates: true,
+    tls: true,
+  tlsCAFile: "/path/to/ca.pem"
+                 });
 
 const db = mongoose.connection;
 
