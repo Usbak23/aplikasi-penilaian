@@ -52,7 +52,7 @@ module.exports = {
       const { name, email, password, confirmPassword, phoneNumber } = req.body;
 
       // Periksa apakah sudah ada pengguna administrator yang terdaftar
-      const existingAdmin = await User.findOne({ role: "admininstrator" });
+      const existingAdmin = await User.findOne({ role: "administrator" });
       if (existingAdmin) {
         req.flash(
           "alertMessage",
