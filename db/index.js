@@ -1,15 +1,12 @@
 const mongoose = require("mongoose");
-const { urlDb } = require('../config');
+const { urlDb } = require("../config");
 
+mongoose.connect(urlDb, {
 
-
-mongoose.connect(urlDb,{
-    tlsAllowInvalidCertificates: true,
-    tls: true,
-    
-    });
+useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
-
 
 module.exports = db;
