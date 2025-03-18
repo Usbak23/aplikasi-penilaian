@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "webpack serve",
     "dev": "nodemon ./bin/www",
     "test": "jest",
-    "build": "echo 'Build step'"
+    "build": "webpack"
   },
   "dependencies": {
     "admin-lte": "^3.2.0",
@@ -14,6 +14,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "bwip-js": "^4.5.1",
+    "compression": "^1.8.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -31,15 +32,26 @@
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.7",
-    "path": "^0.12.7",
     "qrcode": "^1.5.4",
     "supertest-session": "^5.0.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
+    "path": "^0.12.7",
     "quagga": "^0.12.1",
-    "supertest": "^7.0.0"
+    "style-loader": "^4.0.0",
+    "supertest": "^7.0.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-middleware": "^7.4.2",
+    "webpack-dev-server": "^5.2.0",
+    "webpack-hot-middleware": "^2.26.1"
   }
 }

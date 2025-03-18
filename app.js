@@ -7,6 +7,7 @@ const logger = require('morgan');
 const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
+const compression = require('compression');
 
 
 const dashboardRouter = require("./app/dashboard/router");
@@ -33,6 +34,7 @@ app.post("/mock-login", (req, res) => {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use(
   session({
     secret: "keyboard cat",
@@ -41,6 +43,7 @@ app.use(
     cookie: { secure: false },
   })
 );
+app.use(compression());
 app.use(flash());
 app.use(methodOverride("_method"));
 app.use(logger('dev'));
