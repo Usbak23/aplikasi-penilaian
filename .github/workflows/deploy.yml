@@ -24,11 +24,11 @@ jobs:
       - name: Login ke GitHub Packages
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-        - name: Build and Push Docker Image
+      - name: Build and Push Docker Image
         run: |
           docker build -t ghcr.io/usbak23/aplikasi-penilaian:latest .
           docker push ghcr.io/usbak23/aplikasi-penilaian:latest
-      
+
       - name: Deploy ke Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
