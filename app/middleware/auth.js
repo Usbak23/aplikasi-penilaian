@@ -1,4 +1,5 @@
 
+
 module.exports = {
     isLoginAdmin: (req, res, next) => {
         console.log("DEBUG SESSION USER:", req.session.user);
@@ -10,6 +11,7 @@ module.exports = {
             next()
         }
     },
+    
     isLoginPeserta: (req, res, next) => {
         console.log("DEBUG SESSION USER:", req.session.user);
         if (req.session.user === null || req.session.user === undefined || req.session.user.role !== "peserta") {
