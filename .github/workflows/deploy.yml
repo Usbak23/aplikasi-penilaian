@@ -21,10 +21,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Docker Image
-        run: docker build -t aplikasi-penilaian .
+      - name: Login ke GitHub Packages
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Push ke Render
+      - name: Build & Push Docker Image
+        run: |
+          docker build -t ghcr.io/${{ github.actor }}/aplikasi-penilaian:latest .
+          docker push ghcr.io/${{ github.actor }}/aplikasi-penilaian:latest
+
+      - name: Deploy ke Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
