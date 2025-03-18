@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "webpack serve",
+    "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "test": "jest",
-    "build": "webpack"
+    "build": "echo 'Build step'"
   },
   "dependencies": {
     "admin-lte": "^3.2.0",
@@ -47,11 +47,6 @@
     "path": "^0.12.7",
     "quagga": "^0.12.1",
     "style-loader": "^4.0.0",
-    "supertest": "^7.0.0",
-    "webpack": "^5.98.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-middleware": "^7.4.2",
-    "webpack-dev-server": "^5.2.0",
-    "webpack-hot-middleware": "^2.26.1"
+    "supertest": "^7.0.0"
   }
 }
