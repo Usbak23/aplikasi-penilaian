@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "webpack serve",
+    "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "test": "jest",
-    "build": "webpack"
+    "build": "echo 'Build step'"
   },
   "dependencies": {
     "admin-lte": "^3.2.0",
