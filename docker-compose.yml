@@ -11,6 +11,10 @@ services:
       - .env
     environment:
       MONGO_URL: "mongodb://mongo:27017/db-aplikasi-penialaiaan-intermediate-training"
+    volumes:
+      - .:/app  # Mount seluruh proyek ke dalam container
+      - /app/node_modules  # Hindari overwrite node_modules
+    command: ["npm", "run", "dev"]  # Pakai nodemon agar restart otomatis
 
   mongo:
     image: mongo:latest
