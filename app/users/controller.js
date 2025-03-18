@@ -253,6 +253,75 @@ module.exports = {
       res.redirect("/mot");
     }
   },
+  viewEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const user = await User.findOne({ _id: id });
+      res.render("admin/users/edit", {
+        user,
+        name: req.session.user.name,
+        title: "Halaman Ubah Master of Training",
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/mot");
+    }
+  },
+  actionEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, email, phoneNumber, password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        req.flash(
+        "alertMessage",
+        "Kata sandi dan konfirmasi kata sandi tidak cocok."
+      );
+      req.flash("alertStatus", "danger");
+      return res.redirect("/register");
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await User.findOneAndUpdate(
+        { _id: id },
+        { name, email, phoneNumber, password: hashedPassword }
+      );
+      req.flash("alertMessage", "Berhasil Ubah Pemandu");
+      req.flash("alertStatus", "success");
+      res.redirect("/mot");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/mot");
+    }
+  },
+  actionDelete: async (req, res) => {
+    try {
+      const { id } = req.params;
+      await User.findOneAndDelete({ _id: id });
+      req.flash("alertMessage", "Berhasil Hapus Pemandu");
+      req.flash("alertStatus", "success");
+      res.redirect("/mot");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/mot");
+    }
+  },
+  actionStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      let user = await User.findOne({ _id: id });
+      let status = user.status === "Y" ? "N" : "Y";
+      user = await User.findOneAndUpdate({ _id: id }, { status });
+      req.flash("alertMessage", "Berhasil Ubah Status");
+      req.flash("alertStatus", "success");
+      res.redirect("/mot");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/mot");
+    }
+  },
 
   actionLogout: (req, res) => {
     req.session.destroy();

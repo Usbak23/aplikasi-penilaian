@@ -36,7 +36,7 @@
                         </td>
                      
                         <td>
-                            <form action="/mot/status/<%= user[i]._id %>?_method=PUT" style="display: inline-block;">
+                            <form action="/mot/status/<%= user[i]._id %>?_method=PUT" method="post" style="display: inline-block;">
                             <button class="btn btn-primary btn-sm">
                                 <i class="fas fa-folder"></i>
                                 <% if(user[i].status === 'Y') { %>
