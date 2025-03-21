@@ -1,6 +1,6 @@
 <%- include ../../partial/header.ejs %>
+  <%- include ../../partial/navbar.ejs %>
     <%- include ../../partial/sidebar.ejs %>
-        <%- include ../../partial/navbar.ejs %>
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
@@ -33,10 +33,13 @@
                                     <form action="/category/create" method="POST">
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <label for="name">Masukan Nama Kategori</label>
-                                                <input type="text" name="name" class="form-control"
-                                                    id="name" placeholder="Masukan Nama Kategori"
-                                                    required>
+                                                <label for="name">Nama Materi</label>
+                                                <select name="name" id="nameCategory" class="form-control" required>
+                                                  <option value="">Pilih Nilai Kategori</option>
+                                                    <option value="Kognitif">Kognitif</option>
+                                                    <option value="Psikomotorik">Psikomotorik</option>
+                                                    <option value="Afektif">Afektif</option>
+                                                </select>
                                             </div>
                                             <div>
                                                 <label for="bobotNilai">Masukan Bobot Nilai</label>
