@@ -56,7 +56,7 @@ module.exports = {
 
 
       // Render ke view
-      res.render("admin/nilai_kognitif/view_nilai", {
+      res.render("admin/nilai_tugas/view_nilai", {
         category,
         alert,
         materi,
@@ -67,7 +67,7 @@ module.exports = {
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/nilai_kognitif");
+      res.redirect("/nilai_tugas");
     }
   },
 };
