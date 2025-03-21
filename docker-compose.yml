@@ -1,8 +1,8 @@
-version: '3.8'
+
 
 services:
   app:
-    build: .
+    build: aplikasi-penilaian
     ports:
       - "3000:3000"
     depends_on:
@@ -14,7 +14,7 @@ services:
     volumes:
       - .:/app  # Mount seluruh proyek ke dalam container
       - /app/node_modules  # Hindari overwrite node_modules
-    command: ["npm", "run", "dev"]  # Pakai nodemon agar restart otomatis
+    command: ["npm", "run", "start"]  # Pakai nodemon agar restart otomatis
 
   mongo:
     image: mongo:latest
