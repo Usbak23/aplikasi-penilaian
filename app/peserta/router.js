@@ -10,8 +10,10 @@ const {
   actionDelete,
   viewUpload,
   actionLogout,
+  actionUploadTugas
 } = require("./controller");
 const {isLoginAdmin, isLoginPeserta} =require('../middleware/auth')
+const upload = require('../middleware/upload');
 
 const multer = require('multer')
 const os = require('os')
@@ -26,5 +28,6 @@ router.put("/edit/:id",isLoginAdmin, actionEdit);
 router.post('/upload', isLoginAdmin,multer({ dest: os.tmpdir() }).single('excelFile'), actionUpload);
 router.delete("/delete/:id",isLoginAdmin, actionDelete);
 router.get("/logout",isLoginPeserta, actionLogout);
+router.post("/upload/tugas", isLoginPeserta, upload.single('file'), actionUploadTugas);
 
 module.exports = router;

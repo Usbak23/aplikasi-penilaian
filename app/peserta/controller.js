@@ -192,4 +192,32 @@ module.exports = {
     req.session.destroy();
     res.redirect("/");
   },
+  viewuloadTugas:(req, res) => {  
+    try {
+      res.render("peserta/tugas/view_upload/", {
+        title: "Halaman Upload Tugas",
+        name: req.session.user.name,
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/peserta");
+    }
+  },
+  actionUploadTugas: async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "File tidak ditemukan" });
+      }
+      res.json({
+        fileUrl: req.file.path, // URL dari Cloudinary
+        format: req.file.mimetype,
+        originalName: req.file.originalname,
+      });
+    } catch (error) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+    }
+  },
+
 };
