@@ -1,11 +1,12 @@
-<%- include ../../partial/header.ejs %>
-  <%- include ../../partial/navbar.ejs %>
-    <%- include ../../partial/sidebar.ejs %>
+<%- include('../../partial/header.ejs') %>
+<%- include('../../partial/navbar.ejs') %>
+<%- include('../../partial/sidebar.ejs') %>
+
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <div class="container-fluid">
-            <%- include ../../partial/message.ejs %>
+            <%- include ('../../partial/message.ejs')%>
             <div class="row mb-2">
               <div class="col-sm-6">
                 <h1>
@@ -38,7 +39,7 @@
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-                    <%- include ./table.ejs %>
+                    <%- include ('./table.ejs') %>
                   </div>
                   <!-- /.card-body -->
                 </div>
@@ -54,5 +55,5 @@
         <!-- /.content -->
       </div>
 
-<%- include ../../partial/footer.ejs %>
-<%- include ../../partial/js.ejs %>
+      <%- include ('../../partial/footer.ejs') %>
+      <%- include('../../partial/js.ejs')%>

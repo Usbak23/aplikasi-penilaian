@@ -34,6 +34,7 @@ app.post("/mock-login", (req, res) => {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.locals.settings = { async: true };
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(
   session({

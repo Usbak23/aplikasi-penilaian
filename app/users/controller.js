@@ -15,6 +15,8 @@ module.exports = {
           alert,
           title: "Halaman Signin",
         });
+        console.log(">>>",alert);
+        
       } else {
         res.redirect("/dashboard");
       }
