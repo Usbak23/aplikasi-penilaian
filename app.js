@@ -21,6 +21,7 @@ const absensiRouter = require("./app/absensi/router");
 const dataAbsensi = require ("./app/data_absensi/router");
 const nilaiPsikomotorik = require("./app/nilai_psikomotorik/router");
 const nilaiKognitif = require("./app/nilai_tugas/router");
+const nilaiAfektifRouter = require("./app/nilai_afektif/router");
 const pesertaMakalah = require("./app/makalah_peserta/router");
 
 const app = express();
@@ -69,6 +70,7 @@ app.use("/dashboard", dashboardRouter);
 app.use("/dashboard-peserta", dpRouter);
 app.use("/recap_absensi", dataAbsensi);
 app.use("/nilai_psikomotorik", nilaiPsikomotorik);
+app.use("/nilai-afektif", nilaiAfektifRouter);
 app.use("/nilai_tugas", nilaiKognitif);
 app.use("/makalah_peserta", pesertaMakalah);
 

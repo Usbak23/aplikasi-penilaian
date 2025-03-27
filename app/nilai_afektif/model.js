@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-let psikomotorikForumSchema = mongoose.Schema(
+let afektifForumSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.String,
@@ -44,4 +44,4 @@ let psikomotorikForumSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("PsikomotorikForum", psikomotorikForumSchema);
+module.exports = mongoose.model("AfektifForum", afektifForumSchema);

@@ -1,0 +1,95 @@
+<%- include('../../partial/header.ejs') %>
+<%- include('../../partial/navbar.ejs') %>
+<%- include('../../partial/sidebar.ejs') %>
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="h3 mb-2 text-gray-800">Nilai Afektif Forum</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/nilai-afektif">Nilai Afektif</a></li>
+                                    <li class="breadcrumb-item active"></a>Tambah</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div><!-- /.container-fluid -->
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Form Nilai Afektif</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form action="/nilai-afektif/create" method="POST">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="pesertaId">Peserta</label>
+                                                <select name="pesertaId" id="pesertaId" class="form-control" required>
+                                                    <option value="">Pilih Peserta</option>
+                                                    <% peserta.forEach(function(peserta) { %>
+                                                        <option value="<%= peserta._id %>"><%= peserta.name %> - <%= peserta.asal_cabang %></option>
+                                                    <% }); %>
+                                                </select>
+                                                <label for="materiId">Nama Materi</label>
+                                                <select name="materiId" id="materiId" class="form-control" required>
+                                                  <option value="">Pilih Materi</option>
+                                                  <% materi.forEach((materi) => { %>
+                                                    <option value="<%= materi._id %>"><%= materi.materi%> - <%= materi.narasumber %></option>
+                                                  <% }) %>
+                                                </select>
+                                              </div>
+                                              <div>
+                                                <label for="nilaiCategory">Masukan Nilai Kategori</label>
+                                                <select name="nilaiCategory" id="nilaiCategory" class="form-control" required>
+                                                    <option value="">Pilih Kategori Nilai</option>
+                                                    <% nilaiCategory.forEach(function(nilaiCategory) { %>
+                                                        <option value="<%= nilaiCategory._id %>"><%= nilaiCategory.name %></option>
+                                                    <% }); %>
+                                                </select>
+                                            </div>
+                                              <div class="form-group">
+                                                <label for="nilaiPenerimaan">Nilai Penerimaan</label>
+                                                <input type="number" name="nilaiPenerimaan"  class="form-control"
+                                                    id="nilaiPenerimaan" placeholder="Nilai Penerimaan"
+                                                     min="50" max="80">
+                                            </div>
+                                              <div class="form-group">
+                                                <label for="nilaiResponsif">Nilai Responsif"</label>
+                                                <input type="number" name="nilaiResponsif"  class="form-control"
+                                                    id="nilaiResponsif" placeholder="Nilai Responsif"
+                                                     min="50" max="80">
+                                            </div>
+                                              <div class="form-group">
+                                                <label for="nilaiKarakterisasi">Nilai Karakterisasi</label>
+                                                <input type="number" name="nilaiKarakterisasi"  class="form-control"
+                                                    id="nilaiPenerimaan" placeholder="Nilai Karakterisasi"
+                                                     min="50" max="80">
+                                            </div>
+                                           <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                           </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+                <!-- /.content -->
+            </div>
+
+            <%- include ('../../partial/footer.ejs') %>
+            <%- include ('../../partial/js.ejs') %>
