@@ -1,0 +1,22 @@
+<table id="example2" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Asal Cabang</th>
+            <th>Nilai Post Test</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(let i=0; i < PosTest.length; i++){ %>
+
+            <tr>
+                <td><%= i + 1 %></td>
+                <td><%= PosTest[i].pesertaName %></td>
+                <td><%= PosTest[i].pesertaCabang%></td>
+                <td><%= PosTest[i].nilaiTes%></td>
+            </tr>
+            <% } %>
+    </tbody>
+
+</table>
