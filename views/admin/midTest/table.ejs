@@ -1,0 +1,25 @@
+<div class="card-header py-3">
+    <h3 class="m-0 font-weight-bold text-primary">Data Nilai Middle Peserta</h3>
+</div>
+<table id="example2" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Asal Cabang</th>
+            <th>Nilai Middle Test</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(let i=0; i < MidTest.length; i++){ %>
+
+            <tr>
+                <td><%= i + 1 %></td>
+                <td><%= MidTest[i].pesertaName %></td>
+                <td><%= MidTest[i].pesertaCabang%></td>
+                <td><%= MidTest[i].nilaiTes%></td>
+            </tr>
+            <% } %>
+    </tbody>
+
+</table>
