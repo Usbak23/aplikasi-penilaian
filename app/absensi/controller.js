@@ -127,7 +127,7 @@ module.exports = {
   actionDelete: async (req, res) => {
     try {
       const { id } = req.params;
-      const absensi = await Absensi.findOneAndDelete({ _id: id });
+      await Absensi.findOneAndDelete({ _id: id });
       req.flash("alertMessage", "Berhasil Hapus Absensi");
       req.flash("alertStatus", "success");
       res.redirect("/absensi");

@@ -6,11 +6,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <div class="container-fluid">
-            <%- include ../../partial/message.ejs %>
+            <%- include ('../../partial/message.ejs')%>
             <div class="row mb-2">
               <div class="col-sm-6">
                 <h1>
-                  <B>Peserta</B>
+                  <B>Data Peserta Training</B>
                 </h1>
               </div>
               <div class="col-sm-6">
@@ -31,15 +31,9 @@
                 <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">
-                        
                       <a href="/peserta/create" class="btn btn-primary">
                         <i class="nav-icon far fa-plus-square"></i>
                         Tambah
-                      </a>
-                        <a href="/peserta/upload" class="btn btn-primary">
-                            <i class="fas fa-upload"></i>
-                            Upload File ".csv"
-                        </a>
                       </a>
                     </h3>
                   </div>
