@@ -24,7 +24,7 @@ module.exports = {
         return {
           pesertaName: peserta.name,
           pesertaCabang: peserta.asal_cabang,
-          nilaiTes: nilaiTes ? nilaiTes.nilai : 0,
+          nilaiTes: nilaiTes ? nilaiTes.nilaiMidtest : 0,
         };
       });
       res.render("admin/midTest/view_midTest", {
@@ -33,7 +33,6 @@ module.exports = {
         MidTest,
         peserta,
         alert,
-        name: req.session.user.name,
         title: "Halaman Nilai Middle Test",
       });
     } catch (err) {
@@ -42,15 +41,67 @@ module.exports = {
       res.redirect("/mid-test");
     }
   },
+  // viewCreate: async (req, res) => {
+  //   try {
+  //     const peserta = await Peserta.find();
+  //     res.render("admin/midTest/create", {
+  //       name: req.session.user.name,
+  //       category: "Kognitif",
+  //       peserta,
+  //       title: "Halaman Tambah Nilai Middle Test",
+  //     });
+  //   } catch (err) {
+  //     req.flash("alertMessage", `${err.message}`);
+  //     req.flash("alertStatus", "danger");
+  //     res.redirect("/mid-test");
+  //   }
+  // },
+  // actionCreate: async (req, res) => {
+  //   try {
+  //     const { pesertaId, nilaiMidtest } = req.body;
+
+  //     if (!pesertaId || nilaiMidtest === undefined) {
+  //       req.flash("alertMessage", "Peserta dan nilai middle test harus diisi.");
+  //       req.flash("alertStatus", "danger");
+  //       return res.redirect("/mid-test/create");
+  //     }
+
+  //     const existingNilai = await nilaiMidTest.findOne({
+  //       namePeserta: pesertaId,
+  //     });
+
+  //     if (existingNilai) {
+  //       req.flash("alertMessage", "Nilai untuk peserta ini sudah ada.");
+  //       req.flash("alertStatus", "danger");
+  //       return res.redirect("/mid-test/create");
+  //     }
+
+  //     const newNilaiMidTest = new nilaiMidTest({
+  //       namePeserta: pesertaId,
+  //       nilaiCategory: "Kognitif",
+  //       nilaiMidtest: nilaiMidtest || 0, // Default ke 0 jika tidak ada nilai mid-test
+  //       namePemandu: req.session.user.name, // Ambil user dari session
+  //     });
+
+  //     await newNilaiMidTest.save();
+
+  //     req.flash("alertMessage", "Nilai Middle Test berhasil ditambahkan.");
+  //     req.flash("alertStatus", "success");
+  //     res.redirect("/mid-test");
+  //   } catch (err) {
+  //     req.flash("alertMessage", `${err.message}`);
+  //     req.flash("alertStatus", "danger");
+  //     res.redirect("/mid-test/create");
+  //   }
+  // },
+
   viewCreate: async (req, res) => {
     try {
       const peserta = await Peserta.find();
-      const nilaiCategory = await Category.find();
 
       res.render("admin/midTest/create", {
         name: req.session.user.name,
         category: "Kognitif",
-        nilaiCategory,
         peserta,
         title: "Halaman Tambah Nilai Middle Test",
       });
@@ -60,18 +111,21 @@ module.exports = {
       res.redirect("/mid-test");
     }
   },
+
   actionCreate: async (req, res) => {
     try {
-      const { pesertaId, nilaiCategory, nilaiMidtest } = req.body;
+      console.log(req.body);
+      
+      const { pesertaId, nilaiMidtest } = req.body;
 
-      if (!pesertaId || !nilaiCategory  === undefined) {
-        req.flash(
-          "alertMessage",
-          "Peserta, kategori nilai harus diisi."
-        );
+      if (!pesertaId) {
+        req.flash("alertMessage", "Peserta harus dipilih.");
         req.flash("alertStatus", "danger");
-        return res.redirect("/mid-test");
+        return res.redirect("/mid-test/create");
       }
+
+      // Pastikan nilaiMidtest berada dalam batas yang diperbolehkan
+      const nilaiMidtestValid = Math.max(50, Math.min(parseInt(nilaiMidtest, 10), 80));
 
       const existingNilai = await nilaiMidTest.findOne({
         namePeserta: pesertaId,
@@ -85,9 +139,9 @@ module.exports = {
 
       const newNilaiMidTest = new nilaiMidTest({
         namePeserta: pesertaId,
-        nilaiCategory: nilaiCategory,
-        nilaimidTest: nilaiMidtest || 0, // Default ke 0 jika tidak ada nilai mid-test
-        user: req.session.user.name, // Ambil user dari session
+        nilaiCategory: "Kognitif", // Default kategori "Kognitif"
+        nilaiMidtest: nilaiMidtestValid,
+        namePemandu: req.session.user.name, // Menggunakan session user sebagai pemandu
       });
 
       await newNilaiMidTest.save();
@@ -98,7 +152,7 @@ module.exports = {
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/mid-test");
+      res.redirect("/mid-test/create");
     }
   },
 };
