@@ -12,7 +12,7 @@ let fg_discussSchema = mongoose.Schema({
         required: [true, "Peserta tidak boleh kosong"],
     }],
    nilaiCategory: [ {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.String,
     ref: "Category",
     required: [true, "Kategori nilai tidak boleh kosong"],
   }],

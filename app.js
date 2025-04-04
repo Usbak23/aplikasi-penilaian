@@ -25,6 +25,8 @@ const nilaiAfektifRouter = require("./app/nilai_afektif/router");
 const pesertaMakalah = require("./app/makalah_peserta/router");
 const posTestRouter = require("./app/posTest/router");
 const midTestRouter = require("./app/midTest/router");
+const fgdRouter = require("./app/fg_discuss/router");
+
 
 const app = express();
 
@@ -77,6 +79,7 @@ app.use("/nilai_tugas", nilaiKognitif);
 app.use("/makalah_peserta", pesertaMakalah);
 app.use("/post-test", posTestRouter);
 app.use("/mid-test", midTestRouter);
+app.use("/fgd", fgdRouter);
 
 
 

@@ -1,0 +1,22 @@
+<table id="example2" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Asal Cabang</th>
+            <th>Nilai FGD</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(let i=0; i < fgd.length; i++){ %>
+
+            <tr>
+                <td><%= i + 1 %></td>
+                <td><%= fgd[i].pesertaName %></td>
+                <td><%= fgd[i].pesertaCabang%></td>
+                <td><%= fgd[i].nilai_fgd%></td>
+            </tr>
+            <% } %>
+    </tbody>
+
+</table>
