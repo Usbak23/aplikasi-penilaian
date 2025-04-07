@@ -1,0 +1,80 @@
+<%- include('../../partial/header.ejs') %>
+<%- include('../../partial/navbar.ejs') %>
+<%- include('../../partial/sidebar.ejs') %>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="h3 mb-2 text-gray-800">Penilaian Makalah Peserta</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/nilai-makalah">Post Test</a></li>
+                        <li class="breadcrumb-item active">Tambah</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Form Tambah Nilai Post Test</h3>
+                        </div>
+
+                        <form action="/nilai-makalah/create" method="POST">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="pesertaId">Peserta</label>
+                                    <select name="pesertaId" id="pesertaId" class="form-control" required>
+                                        <option value="">Pilih Peserta</option>
+                                        <% for (let i = 0; i < peserta.length; i++) { %>
+                                            <option value="<%= peserta[i]._id %>">
+                                                <%= peserta[i].name %> - <%= peserta[i].asal_cabang %>
+                                            </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                                <input type="hidden" name="nilaiCategory" value="Kognitif">
+
+                                <div class="form-group">
+                                    <label for="nilaiPenulisan">Masukkan Nilai Penulisan</label>
+                                    <input type="number" name="nilaiPenulisan" id="nilaiPenulisan" 
+                                           class="form-control" placeholder="Masukkan nilai (50-80)" 
+                                           min="50" max="80" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nilaiPenyampaian">Masukkan Nilai Penyampaian</label>
+                                    <input type="number" name="nilaiPenyampaian" id="nilaiPenyampaian" 
+                                           class="form-control" placeholder="Masukkan nilai (50-80)" 
+                                           min="50" max="80" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nilaiRespon">Masukkan Nilai Respon</label>
+                                    <input type="number" name="nilaiRespon" id="nilaiRespon" 
+                                           class="form-control" placeholder="Masukkan nilai (50-80)" 
+                                           min="50" max="80" required>
+                                </div>
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<%- include('../../partial/footer.ejs') %>
+<%- include('../../partial/js.ejs')%>

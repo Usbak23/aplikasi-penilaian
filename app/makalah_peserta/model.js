@@ -13,7 +13,7 @@ let makalahPesertaSchema = mongoose.Schema(
       required: [true, "Peserta tidak boleh kosong"],
     }],
     nilaiCategory: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.String,
       ref: "Category",
       required: [true, "Kategori nilai tidak boleh kosong"],
     },
@@ -35,10 +35,6 @@ let makalahPesertaSchema = mongoose.Schema(
       min: [50, "Nilai Adaptasi tidak boleh kurang dari 50"],
       max: [80, "Nilai Adaptasi tidak boleh lebih dari 80"],
     },
-    totalNilai:{
-      type: Number,
-      required : [true,"Total Nilai Harus Diisi"]
-    }
   },
   { timestamps: true }
 );
