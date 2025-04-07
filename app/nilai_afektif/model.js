@@ -40,6 +40,15 @@ let afektifForumSchema = mongoose.Schema(
       min: [50, "Nilai Adaptasi tidak boleh kurang dari 50"],
       max: [80, "Nilai Adaptasi tidak boleh lebih dari 80"],
     },
+    totalNilai: {
+      type: Number,
+      default: 0
+    },
+    rataRataNilai: {
+      type: Number,
+      default: 0
+    },
+    
   },
   { timestamps: true }
 );
