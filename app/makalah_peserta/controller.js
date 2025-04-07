@@ -1,96 +1,122 @@
-const MakalahPeserta = require("./model");
 const Peserta = require("../peserta/model");
-const nilaiCategory = require("../category/model");
+const Category = require("../category/model");
+const NilaiMakalah = require("./model");
 
 module.exports = {
   index: async (req, res) => {
     try {
-        const alertMessage = req.flash("alertMessage");
-        const alertStatus = req.flash("alertStatus");
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
 
-        const alert = { message: alertMessage, status: alertStatus };
+      const alert = { message: alertMessage, status: alertStatus };
 
-        // Fetch data dari database
-        const makalah = await MakalahPeserta.find();
-        const peserta = await Peserta.find();
-        const nilai = await nilaiCategory.find(); // Pastikan nama model sesuai
+      const peserta = await Peserta.find();
+      const nilai = await NilaiMakalah.find();
+      const category = await Category.find();
 
-        // Buat array makalahPeserta
-        const makalahPeserta = peserta.map((pesertaItem) => {
-            const nilaiPeserta = nilai.filter(
-                (n) => pesertaItem._id.toString() === n.namePeserta.toString()
-            );
-
-            return nilaiPeserta.map((n) => ({
-                pesertaName: pesertaItem.name,
-                pesertaCabang: pesertaItem.cabang,
-                makalahName: makalah.find((m) => m._id.toString() === n.name_makalah.toString())?.name || "Unknown",
-                Makalah: n.nilaiMakalah || 0,
-                Respon: n.nilaiRespon || 0,
-                Penyampaian: n.nilaiPenyampaian || 0,
-            }));
-        }).flat(); // Menggabungkan hasil map array
-
-        // Hitung jumlah dan rata-rata nilai
-        const totalNilai = makalahPeserta.reduce(
-            (total, n) => total + n.Makalah + n.Respon + n.Penyampaian,
-            0
+      // Proses pengolahan data peserta dan nilai
+      const MakalahPeserta = peserta.map((peserta) => {
+        const nilaiPeserta = nilai.find(
+          (item) => item.namePeserta.toString() === peserta._id.toString()
         );
-        const rataRata = totalNilai / makalahPeserta.length;
 
-        // Render ke view
-        res.render("admin/makalah_peserta/view_makalah_peserta", {
-            category: nilai,
-            alert,
-            name: req.session.user.name,
-            title: "Halaman Nilai Makalah Peserta",
-            makalahPeserta,
-            Jumlah: Math.round(rataRata), // Pembulatan nilai rata-rata
-        });
-    } catch (err) {
-        req.flash("alertMessage", `${err.message}`);
-        req.flash("alertStatus", "danger");
-        res.redirect("/makalah_peserta");
-    }
-},
-  viewCreate: async (req, res) => {
-    try {
-      res.render("admin/makalah_peserta/create", {
+        const nilaiPenulisan = nilaiPeserta?.nilaiPenulisan || 0;
+        const nilaiPenyampaian = nilaiPeserta?.nilaiPenyampaian || 0;
+        const nilaiRespon = nilaiPeserta?.nilaiRespon || 0;
+
+        const totalNilai = nilaiPenulisan + nilaiPenyampaian + nilaiRespon || 0;
+        const rataRata = totalNilai / 3;
+
+        return {
+          user: req.session.user.name,
+          pesertaName: peserta.name,
+          asalCabang: peserta.asal_cabang,
+          category: "Kognitif",
+          nilaiPenulisan,
+          nilaiPenyampaian,
+          nilaiRespon,
+          rataRata: Math.round(rataRata),
+        };
+      });
+
+      res.render("admin/makalah_peserta/view_makalah_peserta", {
+        category: "Kognitif",
+        peserta,
+        alert,
+        MakalahPeserta,
         name: req.session.user.name,
-        // role : req.session.user.role,
-        title: "Halaman Nilai Makalah Peserta",
+        title: "Halaman Nilai Makalah",
       });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/makalah_peserta");
+      res.redirect("/nilai-makalah");
     }
   },
+
+  viewCreate: async (req, res) => {
+    try {
+      const peserta = await Peserta.find();
+      const nilaiCategory = await Category.find();
+
+      res.render("admin/makalah_peserta/create", {
+        nilaiCategory,
+        peserta,
+        name: req.session.user.name,
+        title: "Halaman Tambah Nilai Makalah",
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai-makalah");
+    }
+  },
+
   actionCreate: async (req, res) => {
     try {
       const {
         pesertaId,
-        nilaiCategory,
         nilaiPenulisan,
         nilaiPenyampaian,
         nilaiRespon,
+        nilaiCategory,
       } = req.body;
-      let makalah = await MakalahPeserta({
-        user: req.session.user.name,
-        pesertaId,
-        nilaiCategory,
-        nilaiPenulisan,
-        nilaiPenyampaian,
-        nilaiRespon,
+
+      if (!pesertaId || !nilaiCategory) {
+        req.flash("alertMessage", "Kategori nilai dan peserta harus dipilih.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai-makalah");
+      }
+
+      const existingNilai = await NilaiMakalah.findOne({
+        namePeserta: pesertaId,
+        nilaiCategory: nilaiCategory,
       });
-      await makalah.save();
-      req.flash("alertMessage", "Berhasil Tambah Nilai Makalah Peserta");
+
+      if (existingNilai) {
+        req.flash("alertMessage", "Nilai untuk peserta ini sudah ada.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai-makalah");
+      }
+
+      const newNilaiMakalah = new NilaiMakalah({
+        namePeserta: pesertaId,
+        nilaiPenulisan: nilaiPenulisan || 0,
+        nilaiPenyampaian: nilaiPenyampaian || 0,
+        nilaiRespon: nilaiRespon || 0,
+        nilaiCategory: nilaiCategory,
+        user: req.session.user.name,
+      });
+
+      await newNilaiMakalah.save();
+
+      req.flash("alertMessage", "Nilai Makalah berhasil ditambahkan.");
       req.flash("alertStatus", "success");
-      res.redirect("/makalah_peserta");
+      res.redirect("/nilai-makalah");
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/makalah_peserta");
+      res.redirect("/nilai-makalah");
     }
   },
 };

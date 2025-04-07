@@ -35,6 +35,10 @@ let makalahPesertaSchema = mongoose.Schema(
       min: [50, "Nilai Adaptasi tidak boleh kurang dari 50"],
       max: [80, "Nilai Adaptasi tidak boleh lebih dari 80"],
     },
+    totalNilai:{
+      type: Number,
+      required : [true,"Total Nilai Harus Diisi"]
+    }
   },
   { timestamps: true }
 );
