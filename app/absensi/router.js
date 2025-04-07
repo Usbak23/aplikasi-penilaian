@@ -9,5 +9,5 @@ router.get("/create", viewCreate);
 router.post("/create", actionCreate);
 router.get("/edit/:id", viewEdit);
 router.post("/edit/:id", actionEdit);
-router.get("/delete/:id", actionDelete);
+router.delete("/delete/:id", actionDelete);
 module.exports = router;
