@@ -46,7 +46,7 @@ module.exports = {
           user: req.session.user.name, // Admin user
           pesertaName: peserta.name,
           asalCabang: peserta.asal_cabang,
-          category: "psikomotorik",
+          category: "Psikomotorik",
           nilaiMateri,
           Jumlah: Math.round(rataRata), // Rata-rata dibulatkan
         };

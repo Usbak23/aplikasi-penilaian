@@ -1,12 +1,12 @@
-<%- include ../../partial_peserta/header.ejs %>
-  <%- include ../../partial_peserta/navbar.ejs %>
-    <%- include ../../partial_peserta/sidebar.ejs %>
+<%- include('../../partial_peserta/header.ejs') %>
+  <%- include('../../partial_peserta/navbar.ejs') %>
+    <%- include('../../partial_peserta/sidebar.ejs') %>
 
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <div class="container-fluid">
-            <%- include ../../partial_peserta/message.ejs %>
+            <%- include('../../partial_peserta/message.ejs') %>
               <div class="row mb-2">
                 <div class="col-sm-6">
                   <h1><b>Scan Barcode Absensi</b></h1>
@@ -73,5 +73,5 @@
         });
       </script>
 
-      <%- include ../../partial_peserta/footer.ejs %>
-        <%- include ../../partial_peserta/js.ejs %>
+      <%- include('../../partial_peserta/footer.ejs')%>
+        <%- include('../../partial_peserta/js.ejs') %>
