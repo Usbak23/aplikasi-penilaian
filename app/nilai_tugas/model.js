@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 let nilaiTugasSchema = mongoose.Schema(
   {
-    user: {
+    namePemandu: {
       type: mongoose.Schema.Types.String,
       ref: "User",
       required: [true, "Admin tidak boleh kosong"],
@@ -18,7 +18,7 @@ let nilaiTugasSchema = mongoose.Schema(
       required: [true, "Peserta tidak boleh kosong"],
     }],
     nilaiCategory: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.String,
       ref: "Category",
       required: [true, "Kategori nilai tidak boleh kosong"],
     },

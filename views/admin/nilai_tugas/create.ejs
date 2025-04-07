@@ -1,0 +1,91 @@
+<%- include('../../partial/header.ejs') %>
+<%- include('../../partial/navbar.ejs') %>
+<%- include('../../partial/sidebar.ejs') %>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h2 class="h3 mb-2 text-gray-800"><b>Nilai Penugasan Peserta</b></h2>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/nilai_tugas">Nilai Penugasan</a></li>
+                        <li class="breadcrumb-item active">Tambah</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Form Tambah Nilai Penugasan</h3>
+                        </div>
+
+                        <form action="/nilai_tugas/create" method="POST">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="pesertaId">Peserta</label>
+                                    <select name="pesertaId" id="pesertaId" class="form-control" required>
+                                        <option value="">Pilih Peserta</option>
+                                        <% for (let i = 0; i < peserta.length; i++) { %>
+                                            <option value="<%= peserta[i]._id %>">
+                                                <%= peserta[i].name %> - <%= peserta[i].asal_cabang %>
+                                            </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="materiId">Materi</label>
+                                    <select name="materiId" id="materiId" class="form-control" required>
+                                        <option value="">Pilih Materi</option>
+                                        <% for (let i = 0; i < materi.length; i++) { %>
+                                            <option value="<%= materi[i]._id %>">
+                                                <%= materi[i].materi %> - <%= materi[i].narasumber %>
+                                            </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                                <input type="hidden" name="nilaiCategory" value="Kognitif">
+
+                                <div class="form-group">
+                                    <label for="nilaiPengetahuan">Masukkan Nilai Pengetahuan</label>
+                                    <input type="number" name="nilaiPengetahuan" id="nilaiPengetahuan" 
+                                           class="form-control" placeholder="Masukkan nilai (50-80)" 
+                                           min="50" max="80" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nilaiPemahaman">Masukkan Nilai Pemahaman</label>
+                                    <input type="number" name="nilaiPemahaman" id="nilaiPemahaman" 
+                                           class="form-control" placeholder="Masukkan nilai (50-80)" 
+                                           min="50" max="80" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nilaiAnalisis">Masukkan Nilai Analisis</label>
+                                    <input type="number" name="nilaiAnalisis" id="nilaiAnalisis" 
+                                           class="form-control" placeholder="Masukkan nilai (50-80)" 
+                                           min="50" max="80" required>
+                                </div>
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<%- include('../../partial/footer.ejs') %>
+<%- include('../../partial/js.ejs')%>
