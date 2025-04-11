@@ -10,6 +10,10 @@ let recapAbsensischema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Absensi",
     require: [true, 'Absensi tidak boleh kosong']
+ }],
+ status:[{
+   type: mongoose.Schema.Types.ObjectId,
+   ref:"nilaiAbsensi"
  }]
 
 }, { timestamps: true });

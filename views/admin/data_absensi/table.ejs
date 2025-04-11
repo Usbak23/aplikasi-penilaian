@@ -1,49 +1,50 @@
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h3 class="m-0 font-weight-bold text-primary">Data Absensi Training</h3>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="example1" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nama Peserta</th>
-                        <th>Asal Cabang</th>
-                       
-                        <% if (pesertaWithAbsensi[0]?.materiStatus) { %>
-                            <% pesertaWithAbsensi[0].materiStatus.forEach((materi) => { %>
-                              <th><%= materi.materiName %></th>
-                            <% }) %>
-                          <% } %>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let i = 0; i < pesertaWithAbsensi.length; i++) { %>
-                      <tr>
-                        <th>
-                          <%= i + 1 %>
-                        </th>
-                        <th>
-                          <%= pesertaWithAbsensi[i].name || 'Tidak ditemukan' %>
-                        </th>
-                       
-                        <th>
-                          <%= pesertaWithAbsensi[i].asal_cabang || '-' %>
-                        </th>
-                        <% pesertaWithAbsensi[i].materiStatus.forEach((materi) => { %>
-                          <th>
-                            <%= materi.status || '-' %>
-                          </th>
-                        <% }); %>
-                      </tr>
-                    <% } %>
-                  </tbody>
-                  
-            </table>
-        </div>
+  <div class="card-header py-3">
+    <h3 class="m-0 font-weight-bold text-primary">Data Absensi Training</h3>
+  </div>
 
+  <div class="card-body">
+    <div class="table-responsive">
+      <table id="example1" class="table table-bordered">
+        <thead class="text-center">
+          <tr>
+            <th>No.</th>
+            <th>Nama Peserta</th>
+            <th>Asal Cabang</th>
+            <% if (pesertaWithAbsensi[0]?.materiStatus) { %>
+              <% pesertaWithAbsensi[0].materiStatus.forEach((materi) => { %>
+                <th><%= materi.materiName %></th>
+              <% }) %>
+            <% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% pesertaWithAbsensi.forEach((peserta, index) => { %>
+            <tr>
+              <td class="text-center"><%= index + 1 %></td>
+              <td><%= peserta.name || 'Tidak ditemukan' %></td>
+              <td><%= peserta.asal_cabang || '-' %></td>
+              <% peserta.materiStatus.forEach((materi) => { %>
+                <td class="text-center">
+                  <% if (materi.status === 'Hadir') { %>
+                    <span class="badge badge-success"><%= materi.status %></span>
+                  <% } else if (materi.status === 'Absen') { %>
+                    <span class="badge badge-danger"><%= materi.status %></span>
+                  <% } else if (materi.status === 'Izin') { %>
+                    <span class="badge badge-warning"><%= materi.status %></span>
+                  <% } else if (materi.status === 'Terlambat') { %>
+                    <span class="badge badge-info"><%= materi.status %></span>
+                  <% } else if (materi.status === 'Sakit') { %>
+                    <span class="badge badge-primary"><%= materi.status %></span>
+                  <% } else { %>
+                    <span class="badge badge-secondary">Belum Presensi</span>
+                  <% } %>
+                </td>
+              <% }) %>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
-    <!-- /.card-body -->
+  </div>
 </div>
