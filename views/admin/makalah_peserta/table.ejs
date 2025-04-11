@@ -4,47 +4,49 @@
   </div>
   <!-- /.card-header -->
   <div class="card-body">
-    <table class="table table-bordered table-hover">
-      <thead class="text-center">
-        <tr>
-          <th>No</th>
-          <th>Nama Peserta</th>
-          <th>Asal Cabang</th>
-          <th>Nilai Penulisan</th>
-          <th>Nilai Penyampaian</th>
-          <th>Nilai Respon</th>
-          <th>Jumlah</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for(let i=0; i < MakalahPeserta.length; i++){ %>
-
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="text-center">
           <tr>
-            <td>
-              <%= i + 1 %>
-            </td>
-            <td>
-              <%= MakalahPeserta[i].pesertaName %>
-            </td>
-            <td>
-              <%= MakalahPeserta[i].asalCabang%>
-            </td>
-            <td>
-              <%= MakalahPeserta[i].nilaiPenulisan%>
-            </td>
-            <td>
-              <%= MakalahPeserta[i].nilaiPenyampaian%>
-            </td>
-            <td>
-              <%= MakalahPeserta[i].nilaiRespon%>
-            </td>
-            <td>
-              <%= MakalahPeserta[i].rataRata%>
-            </td>
+            <th>No</th>
+            <th>Nama Peserta</th>
+            <th>Asal Cabang</th>
+            <th>Nilai Penulisan</th>
+            <th>Nilai Penyampaian</th>
+            <th>Nilai Respon</th>
+            <th>Jumlah</th>
           </tr>
-          <% } %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% for(let i=0; i < MakalahPeserta.length; i++){ %>
+  
+            <tr>
+              <td>
+                <%= i + 1 %>
+              </td>
+              <td>
+                <%= MakalahPeserta[i].pesertaName %>
+              </td>
+              <td>
+                <%= MakalahPeserta[i].asalCabang%>
+              </td>
+              <td>
+                <%= MakalahPeserta[i].nilaiPenulisan%>
+              </td>
+              <td>
+                <%= MakalahPeserta[i].nilaiPenyampaian%>
+              </td>
+              <td>
+                <%= MakalahPeserta[i].nilaiRespon%>
+              </td>
+              <td>
+                <%= MakalahPeserta[i].rataRata%>
+              </td>
+            </tr>
+            <% } %>
+        </tbody>
+      </table>
+    </div>
   </div>
   <!-- /.card-body -->
 </div>
