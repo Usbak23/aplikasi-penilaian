@@ -27,6 +27,7 @@ const posTestRouter = require("./app/posTest/router");
 const midTestRouter = require("./app/midTest/router");
 const fgdRouter = require("./app/fg_discuss/router");
 const nilaiPresensiRouter = require("./app/nilai_absensi/router");
+const nilaiKehadiranRouter = require("./app/nilai_kehadiran/router");
 
 
 const app = express();
@@ -82,6 +83,7 @@ app.use("/post-test", posTestRouter);
 app.use("/mid-test", midTestRouter);
 app.use("/fgd", fgdRouter);
 app.use("/nilai-presensi", nilaiPresensiRouter);
+app.use("/nilai-kehadiran", nilaiKehadiranRouter);
 
 
 

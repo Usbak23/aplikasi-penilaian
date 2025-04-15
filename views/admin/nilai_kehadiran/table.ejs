@@ -1,0 +1,43 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h3 class="m-0 font-weight-bold text-primary">Rekap Nilai Kehadiran</h3>
+    </div>
+    <div class="card-body">
+      <% if (nilaiKehadiran.length > 0) { %>
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th rowspan="2">No.</th>
+                <th rowspan="2">Nama</th>
+                <th rowspan="2">Asal Cabang</th>
+                <th colspan="<%= nilaiKehadiran[0].perAbsensi.length %>">Nilai Kehadiran Materi</th>
+                <th rowspan="2">Total</th>
+              </tr>
+              <tr>
+                <% nilaiKehadiran[0].perAbsensi.forEach(absensi => { %>
+                  <th><%= absensi.namaMateri %></th>
+                <% }) %>
+              </tr>
+            </thead>
+            <tbody>
+              <% nilaiKehadiran.forEach((data, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= data.peserta && data.peserta.name ? data.peserta.name : '-' %></td>
+                  <td><%= data.peserta && data.peserta.asal_cabang ? data.peserta.asal_cabang : '-' %></td>
+                  <% data.perAbsensi.forEach(absensi => { %>
+                    <td><%= absensi.bobotNilai %></td>
+                  <% }) %>
+                  <td><%= data.totalNilaiKehadiran %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <p class="text-center">Data nilai kehadiran belum tersedia.</p>
+      <% } %>
+    </div>
+  </div>
+  

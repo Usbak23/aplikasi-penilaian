@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose port yang digunakan oleh aplikasi
-EXPOSE 3000
+EXPOSE 5000
 
 # Jalankan aplikasi
 CMD ["npm", "run", "dev"]
