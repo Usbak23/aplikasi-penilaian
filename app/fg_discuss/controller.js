@@ -13,17 +13,17 @@ module.exports = {
       const category = await Category.find();
       const nilai = await fg_discuss.find();
 
-
       const fgd = peserta.map((peserta) => {
-          const nilai_fgd = nilai.find(
-            (nilai) => peserta._id.toString() === nilai.namePeserta.toString()              
-          );
-          return {
-            pesertaName: peserta.name,
-            pesertaCabang: peserta.asal_cabang,
-            nilai_fgd: nilai_fgd ? nilai_fgd.nilaiFgd : 0,
-          };
-      })
+        const nilai_fgd = nilai.find(
+          (nilai) => peserta._id.toString() === nilai.namePeserta.toString()
+        );
+        return {
+          _id: nilai_fgd ? nilai_fgd._id : null,
+          pesertaName: peserta.name,
+          pesertaCabang: peserta.asal_cabang,
+          nilai_fgd: nilai_fgd ? nilai_fgd.nilaiFgd : 0,
+        };
+      });
       res.render("admin/fg_discuss/view_fg_discuss", {
         fgd,
         alert,
@@ -64,7 +64,7 @@ module.exports = {
         return res.redirect("/fgd/create");
       }
 
-      // Pastikan nilaiFgd berada dalam batas yang diperbolehkan      
+      // Pastikan nilaiFgd berada dalam batas yang diperbolehkan
       const nilaiFgdValid = Math.max(50, Math.min(parseInt(nilaiFgd, 10), 80));
 
       const existingNilai = await fg_discuss.findOne({
@@ -86,7 +86,10 @@ module.exports = {
 
       await newNilaiFgd.save();
 
-      req.flash("alertMessage", "Nilai Focus Groud Discussion berhasil ditambahkan.");
+      req.flash(
+        "alertMessage",
+        "Nilai Focus Groud Discussion berhasil ditambahkan."
+      );
       req.flash("alertStatus", "success");
       res.redirect("/fgd");
     } catch (err) {
@@ -97,15 +100,19 @@ module.exports = {
   },
   viewEdit: async (req, res) => {
     try {
-      const peserta = await Peserta.find();
-      const { id } = req.params;
-      const fg_discuss = await fg_discuss.findOne({ _id: id });
+      const nilaiId = req.params.id;
+      const fgd = await fg_discuss
+      .findById(nilaiId)
+      .populate("namePeserta");
+      if (!fgd) {
+        req.flash("alertMessage", "Data nilai tidak ditemukan.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/fgd");
+      }
       res.render("admin/fg_discuss/edit", {
-        fg_discuss,
-        category: "Kognitif",
-        peserta,
+        nilai: fgd,
         name: req.session.user.name,
-        title: "Halaman Ubah Nilai Focus Groud Discussion",
+        title: "Halaman Ubah Nilai Focus Group Discussion",
       });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
@@ -116,42 +123,16 @@ module.exports = {
   actionEdit: async (req, res) => {
     try {
       const { id } = req.params;
-      const { pesertaId, nilaiFgd } = req.body;
+      const { nilaiFgd } = req.body;
 
-      if (!pesertaId) {
-        req.flash("alertMessage", "Peserta harus dipilih.");
-        req.flash("alertStatus", "danger");
-        return res.redirect(`/fgd/edit/${id}`);
-      } else if (!nilaiFgd) {      
-        req.flash("alertMessage", "Nilai Focus Groud Discussion harus diisi.");
-        req.flash("alertStatus", "danger");
-        return res.redirect(`/fgd/edit/${id}`);
-      }
+      await fg_discuss.findOneAndUpdate(
+        { _id: id },
+        { $set: { nilaiFgd } }
+      );
 
-      // Pastikan nilaiFgd berada dalam batas yang diperbolehkan
-      const nilaiFgdValid = Math.max(50, Math.min(parseInt(nilaiFgd, 10), 80));
-
-      const existingNilai = await fg_discuss.findOne({
-        namePeserta: pesertaId,
-      });
-
-      if (existingNilai) {
-        req.flash("alertMessage", "Nilai untuk peserta ini sudah ada.");
-        req.flash("alertStatus", "danger");
-        return res.redirect("/fgd");
-      }
-
-      await fg_discuss.updateOne(
-          { _id: id },
-          {
-              $set: {
-                  namePeserta: pesertaId,
-                  nilaiFgd: nilaiFgdValid,
-                  namePemandu: req.session.user.name, // Menggunakan session user sebagai pemandu
-              },
-          }
-      );      
-      req.flash("alertMessage", "Nilai Focus Groud Discussion berhasil diubah.");
+      req.flash(
+        "alertMessage",
+        "Nilai Focus Groud Discussion berhasil diubah.")
       req.flash("alertStatus", "success");
       res.redirect("/fgd");
     } catch (err) {
@@ -159,6 +140,5 @@ module.exports = {
       req.flash("alertStatus", "danger");
       res.redirect(`/fgd/edit/${id}`);
     }
-  }
-      
+  },
 };

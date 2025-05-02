@@ -28,6 +28,7 @@ module.exports = {
         const rataRata = totalNilai / 3;
 
         return {
+          _id: nilaiPeserta ? nilaiPeserta._id : null,
           user: req.session.user.name,
           pesertaName: peserta.name,
           asalCabang: peserta.asal_cabang,
@@ -119,4 +120,45 @@ module.exports = {
       res.redirect("/nilai-makalah");
     }
   },
+  viewEdit: async (req,res) => {
+    try {
+      const nilaiId = req.params.id;
+      const nilai = await NilaiMakalah
+      .findById(nilaiId)
+      .populate('namePeserta');
+      if (!nilai) {
+        req.flash("alertMessage", "Data nilai tidak ditemukan.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai-makalah");
+      }
+      res.render("admin/makalah_peserta/edit", {
+        nilai: nilai,
+        name: req.session.user.name,
+        title: "Halaman Ubah Nilai Makalah",
+      })
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai-makalah");
+    }
+  },
+  actionEdit:async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { nilaiPenulisan, nilaiPenyampaian, nilaiRespon, nilaiCategory } = req.body;
+
+      await NilaiMakalah.findOneAndUpdate(
+        { _id: id },
+        { $set: { nilaiPenulisan, nilaiPenyampaian, nilaiRespon, nilaiCategory } }
+      );  
+
+      req.flash("alertMessage", "Nilai Makalah berhasil diubah.");    
+      req.flash("alertStatus", "success");
+      res.redirect("/nilai-makalah");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai-makalah");
+    }
+  }
 };

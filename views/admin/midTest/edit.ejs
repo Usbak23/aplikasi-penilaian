@@ -1,0 +1,66 @@
+<%- include('../../partial/header.ejs') %>
+<%- include('../../partial/navbar.ejs') %>
+<%- include('../../partial/sidebar.ejs') %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="h3 mb-2 text-gray-800">Edit Nilai Middle Test Peserta</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/mid-test">Nilai Middle Test</a></li>
+            <li class="breadcrumb-item active">Edit</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Form Edit Nilai Middle Test</h3>
+            </div>
+
+            <form action="/mid-test/edit/<%= nilai._id %>?_method=PUT" method="POST">
+              <div class="card-body">
+                <div class="form-group">
+                    <label>Nama Peserta</label>
+                    <% if (nilai.namePeserta && nilai.namePeserta.length > 0) { %>
+                      <% nilai.namePeserta.forEach(peserta => { %>
+                        <input type="text" class="form-control" value="<%= peserta.name %>" readonly>
+                      <% }) %>
+                    <% } else { %>
+                      <p>-</p>
+                    <% } %>
+                </div>
+
+                <div class="form-group">
+                  <label for="nilaiMidtest">Nilai Post Test</label>
+                  <input type="number" name="nilaiMidtest" class="form-control" value="<%= nilai.nilaiMidtest %>" required min="50" max="80">
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../../partial/footer.ejs') %>
+<%- include('../../partial/js.ejs') %>

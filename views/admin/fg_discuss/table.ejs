@@ -5,6 +5,7 @@
             <th>Nama</th>
             <th>Asal Cabang</th>
             <th>Nilai FGD</th>
+            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -15,6 +16,13 @@
                 <td><%= fgd[i].pesertaName %></td>
                 <td><%= fgd[i].pesertaCabang%></td>
                 <td><%= fgd[i].nilai_fgd%></td>
+                <td style="text-align: center;">
+                    <% if (fgd[i]._id) { %>
+                        <a href="/fgd/edit/<%= fgd[i]._id %>" class="btn btn-sm btn-warning" title="Edit Nilai">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    <% } %>
+                </td>
             </tr>
             <% } %>
     </tbody>

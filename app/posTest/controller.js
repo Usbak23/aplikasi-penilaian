@@ -22,6 +22,7 @@ module.exports = {
           (nilai) => peserta._id.toString() === nilai.namePeserta.toString()
         );
         return {
+          _id: nilaiTes ? nilaiTes._id : null, 
           pesertaName: peserta.name,
           pesertaCabang: peserta.asal_cabang,
           nilaiTes: nilaiTes ? nilaiTes.nilaiPostest : 0,
@@ -41,7 +42,6 @@ module.exports = {
       res.redirect("/post-test");
     }
   },
-  
 
   viewCreate: async (req, res) => {
     try {
@@ -63,7 +63,7 @@ module.exports = {
   actionCreate: async (req, res) => {
     try {
       console.log(req.body);
-      
+
       const { pesertaId, nilaiPostest } = req.body;
 
       if (!pesertaId) {
@@ -73,7 +73,10 @@ module.exports = {
       }
 
       // Pastikan nilaiMidtest berada dalam batas yang diperbolehkan
-      const nilaiPostestValid = Math.max(50, Math.min(parseInt(nilaiPostest, 10), 80));
+      const nilaiPostestValid = Math.max(
+        50,
+        Math.min(parseInt(nilaiPostest, 10), 80)
+      );
 
       const existingNilai = await nilaiPosTest.findOne({
         namePeserta: pesertaId,
@@ -101,6 +104,48 @@ module.exports = {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/post-test/create");
+    }
+  },
+  viewEdit: async (req, res) => {
+    try {
+      const nilaiId = req.params.id;
+      const PosTest = await nilaiPosTest
+        .findById(nilaiId)
+        .populate("namePeserta");
+      if (!PosTest) {
+        req.flash("alertMessage", "Data nilai tidak ditemukan.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/post-test");
+      }
+      res.render("admin/posTest/edit", {
+        nilai: PosTest,
+        name: req.session.user.name,
+        title: "Halaman Ubah Nilai Post Test",
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/post-test");
+    }
+  },
+
+  actionEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { nilaiPostest } = req.body;
+
+      await nilaiPosTest.findOneAndUpdate(
+        { _id: id },
+        { $set: { nilaiPostest } }
+      );
+
+      req.flash("alertMessage", "Nilai Post Test berhasil diubah.");
+      req.flash("alertStatus", "success");
+      res.redirect("/post-test");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/post-test");
     }
   },
 };
