@@ -164,7 +164,6 @@ module.exports = {
       const { nilaiPengetahuan, nilaiPemahaman, nilaiAnalisis } = req.body;
 
       const nilai = await NilaiKognitif.findById(req.params.id);
-      console.log("ID yang diterima:", req.params.id);
 
       if (!nilai) {
         req.flash("alertMessage", "Data nilai tidak ditemukan.");
