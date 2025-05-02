@@ -40,9 +40,8 @@ let nilaiTugasSchema = mongoose.Schema(
       min: [0, "Nilai Adaptasi tidak boleh kurang dari 0"],
       max: [80, "Nilai Adaptasi tidak boleh lebih dari 80"],
     },
-    totalRatarata:{
+    nilaiTotal:{
       type: Number,
-      index: true,
     }
   },
   { timestamps: true }
