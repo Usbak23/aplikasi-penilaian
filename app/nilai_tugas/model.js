@@ -25,21 +25,25 @@ let nilaiTugasSchema = mongoose.Schema(
     nilaiPengetahuan: {
       type: Number,
       required: [true, "Nilai Persepsi harus diisi"],
-      min: [50, "Nilai Persepsi tidak boleh kurang dari 50"],
+      min: [0, "Nilai Persepsi tidak boleh kurang dari 0"],
       max: [80, "Nilai Persepsi tidak boleh lebih dari 80"],
     },
     nilaiPemahaman: {
       type: Number,
       required: [true, "Nilai Reaksi harus diisi"],
-      min: [50, "Nilai Reaksi tidak boleh kurang dari 50"],
+      min: [0, "Nilai Reaksi tidak boleh kurang dari 0"],
       max: [80, "Nilai Reaksi tidak boleh lebih dari 80"],
     },
     nilaiAnalisis: {
       type: Number,
       required: [true, "Nilai Adaptasi harus diisi"],
-      min: [50, "Nilai Adaptasi tidak boleh kurang dari 50"],
+      min: [0, "Nilai Adaptasi tidak boleh kurang dari 0"],
       max: [80, "Nilai Adaptasi tidak boleh lebih dari 80"],
     },
+    totalRatarata:{
+      type: Number,
+      index: true,
+    }
   },
   { timestamps: true }
 );
