@@ -151,8 +151,6 @@ module.exports = {
         name: req.session.user.name,
         title: "Halaman Edit Nilai Kognitif",
       });
-      console.log(">>>>>>>",nilai.namePeserta); // Apakah null / undefined?
-      console.log(">>>>>>>>>",nilai.name_materi);
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
