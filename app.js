@@ -89,7 +89,10 @@ app.use("/nilai-kehadiran", nilaiKehadiranRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  res.status(404).render("index", {
+    name: req.session.user.name,
+    title: "404 Not Found"
+  });
 });
 
 // error handler

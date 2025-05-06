@@ -12,11 +12,8 @@
           <th rowspan="2">No.</th>
           <th rowspan="2">Nama</th>
           <% if (materi.length > 0) { %>
-            
             <% materi.forEach((item) => { %>
-                <% console.log(">>>>", item); %>
               <th colspan="3"><%= item.materi %></th>
-            
             <% }) %>
           <% } %>
           <th rowspan="2">Total</th>
@@ -27,6 +24,7 @@
               <th>Persepsi</th>
               <th>Reaksi</th>
               <th>Adaptasi</th>
+              <th>Aksi</th>
             <% }) %>
           <% } %>
         </tr>
@@ -41,6 +39,11 @@
                 <td><%= materi.Persepsi %></td>
                 <td><%= materi.Reaksi %></td>
                 <td><%= materi.Adaptasi %></td>
+                <td style="text-align: center;">
+                  <a href="/nilai_psikomotorik/edit/<%= materi.idNilai %>" class="btn btn-sm btn-warning" title="Edit Nilai">
+                      <i class="fas fa-edit"></i>
+                  </a>
+              </td>
               <% }) %>
               <td><%= peserta.Jumlah %></td>
             </tr>
