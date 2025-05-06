@@ -26,6 +26,7 @@ module.exports = {
           );
 
           return {
+            idNilai: NilaiAfektif ? NilaiAfektif._id : null,
             materiName: materi.name,
             Penerimaan: NilaiAfektif ? NilaiAfektif.nilaiPenerimaan : 0,
             Responsif: NilaiAfektif ? NilaiAfektif.nilaiResponsif : 0,
@@ -51,10 +52,6 @@ module.exports = {
           Jumlah: Math.round(rataRata), // Rata-rata dibulatkan
         };
       });
-
-      // Debug data
-      console.log("AfektifPeserta >>>>", AfektifPeserta);
-
       // Render ke view
       res.render("admin/nilai_afektif/view_nilai", {
         category,
@@ -145,4 +142,50 @@ module.exports = {
       res.redirect("/nilai-afektif");
     }
   },
+  viewEdit: async (req, res) => {
+    try {
+      const nilaiId = req.params.id;
+      const nilai = await NilaiAfektif.findById(nilaiId).populate('namePeserta').populate('name_materi');
+      if (!nilai) {
+        req.flash("alertMessage", "Data nilai tidak ditemukan.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai-afektif");
+      }
+      res.render("admin/nilai_afektif/edit", {
+        nilai: nilai,
+        materui: nilai.materi,
+        name: req.session.user.name,
+        title: "Halaman Ubah Nilai Afektif",
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai-afektif");
+    }
+  },
+  actionEdit: async (req, res) => {
+    try {
+      const { nilaiPenerimaan, nilaiResponsif, nilaiKarakterisasi } = req.body;
+      const nilaiId = req.params.id;
+      const nilai = await NilaiAfektif.findById(nilaiId);
+      if (!nilai) {
+        req.flash("alertMessage", "Data nilai tidak ditemukan.");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai-afektif");
+      }
+      // Update nilai
+      nilai.nilaiPenerimaan = nilaiPenerimaan || nilai.nilaiPenerimaan;
+      nilai.nilaiResponsif = nilaiResponsif || nilai.nilaiResponsif;
+      nilai.nilaiKarakterisasi = nilaiKarakterisasi || nilai.nilaiKarakterisasi;
+      await nilai.save();
+      req.flash("alertMessage", "Nilai berhasil diperbarui.");
+      req.flash("alertStatus", "success");
+      res.redirect("/nilai-afektif");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai-afektif");
+    }
+  },
+    
 };

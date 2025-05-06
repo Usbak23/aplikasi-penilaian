@@ -26,6 +26,7 @@ module.exports = {
           );
 
           return {
+            idNilai: nilaiPsikomotorik ? nilaiPsikomotorik._id : null,
             materiName: materi.name,
             Reaksi: nilaiPsikomotorik ? nilaiPsikomotorik.nilaiReaksi : 0,
             Adaptasi: nilaiPsikomotorik ? nilaiPsikomotorik.nilaiAdaptasi : 0,
@@ -43,6 +44,7 @@ module.exports = {
         const rataRata = jumlahMateri > 0 ? totalNilai / jumlahMateri : 0;
 
         return {
+          pesertaId: peserta._id,
           user: req.session.user.name, // Admin user
           pesertaName: peserta.name,
           asalCabang: peserta.asal_cabang,
@@ -145,4 +147,61 @@ module.exports = {
       res.redirect("/nilai_psikomotorik");
     }
   },
+  viewEdit: async(req, res) => {
+    try {
+      const nilaiId = req.params.id;
+
+      const nilai = await NilaiPsikomotorik
+      .findById(nilaiId)
+      .populate('namePeserta')
+      .populate('name_materi');
+
+      if(!nilai){
+        req.flash("alertMessage", "Data Nilai tidak ditemukan");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai_psikomotorik")
+
+      }
+      res.render('admin/nilai_psikomotorik/edit', {
+        nilai: nilai,
+        materui: nilai.materi,
+        name: req.session.user.name,
+        title: "Halaman Ubah Nilai Psikomotorik",
+      });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai_psikomotorik");
+    }
+  },
+  actionEdit: async(req, res) => {
+    try {
+      const {
+        nilaiReaksi,
+        nilaiAdaptasi,
+        nilaiPersepsi,
+      } = req.body;
+
+      const nilai = await NilaiPsikomotorik.findById(req.params.id);
+
+      if(!nilai){
+        req.flash("alertMessage", "Data Nilai tidak ditemukan");
+        req.flash("alertStatus", "danger");
+        return res.redirect("/nilai_psikomotorik")
+      }
+
+      nilai.nilaiReaksi = nilaiReaksi || nilai.nilaiReaksi;
+      nilai.nilaiAdaptasi = nilaiAdaptasi || nilai.nilaiAdaptasi;
+      nilai.nilaiPersepsi = nilaiPersepsi || nilai.nilaiPersepsi;
+
+      await nilai.save();
+      req.flash("alertMessage", "Nilai berhasil diperbarui.");
+      req.flash("alertStatus", "success");
+      res.redirect("/nilai_psikomotorik");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nilai_psikomotorik");
+    }
+  }
 };

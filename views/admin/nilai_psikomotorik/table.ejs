@@ -1,61 +1,62 @@
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h3 class="m-0 font-weight-bold text-primary">Data Nilai Psikomotorik Forum</h3>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-        <div class="table-responsive">
+  <div class="card-header py-3">
+    <h3 class="m-0 font-weight-bold text-primary">Data Nilai Psikomotorik Forum</h3>
+  </div>
 
-            <table id="example1" class="table table-bordered" >
-               <thead style="text-align: center;">
-        <tr>
-          <th rowspan="2">No.</th>
-          <th rowspan="2">Nama</th>
-          <% if (materi.length > 0) { %>
-            <% materi.forEach((item) => { %>
-              <th colspan="3"><%= item.materi %></th>
-            <% }) %>
-          <% } %>
-          <th rowspan="2">Total</th>
-        </tr>
-        <tr>
-          <% if (materi.length > 0) { %>
-            <% materi.forEach(() => { %>
-              <th>Persepsi</th>
-              <th>Reaksi</th>
-              <th>Adaptasi</th>
-              <th>Aksi</th>
-            <% }) %>
-          <% } %>
-        </tr>
-      </thead>
-      <tbody>
-        <% if (PsikomotorikPeserta.length > 0) { %>
-          <% PsikomotorikPeserta.forEach((peserta, index) => { %>
-            <tr>
-              <td><%= index + 1 %></td>
-              <td><%= peserta.pesertaName %></td>
-              <% peserta.nilaiMateri.forEach((materi) => { %>
-                <td><%= materi.Persepsi %></td>
-                <td><%= materi.Reaksi %></td>
-                <td><%= materi.Adaptasi %></td>
-                <td style="text-align: center;">
-                  <a href="/nilai_psikomotorik/edit/<%= materi.idNilai %>" class="btn btn-sm btn-warning" title="Edit Nilai">
-                      <i class="fas fa-edit"></i>
-                  </a>
-              </td>
-              <% }) %>
-              <td><%= peserta.Jumlah %></td>
-            </tr>
-          <% }) %>
-        <% } else { %>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table id="example1" class="table table-bordered">
+        <thead style="text-align: center;">
           <tr>
-            <td colspan="<%= 2 + materi.length * 3 %>" style="text-align: center;">Data tidak tersedia</td>
+            <th rowspan="2">No.</th>
+            <th rowspan="2">Nama</th>
+            <% if (materi.length > 0) { %>
+              <% materi.forEach((item) => { %>
+                <th colspan="4"><%= item.materi %></th>
+              <% }) %>
+            <% } %>
+            <th rowspan="2">Total</th>
           </tr>
-        <% } %>
-      </tbody>
-        </table>
+          <tr>
+            <% if (materi.length > 0) { %>
+              <% materi.forEach(() => { %>
+                <th>Persepsi</th>
+                <th>Reaksi</th>
+                <th>Adaptasi</th>
+                <th>Aksi</th>
+              <% }) %>
+            <% } %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if (PsikomotorikPeserta.length > 0) { %>
+            <% PsikomotorikPeserta.forEach((peserta, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= peserta.pesertaName %></td>
+
+                <% peserta.nilaiMateri.forEach((materi) => { %>
+                  <td><%= materi.Persepsi %></td>
+                  <td><%= materi.Reaksi %></td>
+                  <td><%= materi.Adaptasi %></td>
+                  <td style="text-align: center;">
+                    <a href="/nilai_psikomotorik/edit/<%= materi.idNilai %>" class="btn btn-sm btn-warning" title="Edit Nilai">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                  </td>
+                <% }) %>
+
+                <td><%= peserta.Jumlah %></td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="<%= 2 + (materi.length * 4) + 1 %>" style="text-align: center;">Data tidak tersedia</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
     </div>
-    </div>
-    <!-- /.card-body -->
+  </div>
 </div>
