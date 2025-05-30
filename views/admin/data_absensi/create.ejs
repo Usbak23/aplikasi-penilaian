@@ -1,0 +1,96 @@
+<%- include('../../partial/header.ejs') %>
+<%- include('../../partial/navbar.ejs') %>
+<%- include('../../partial/sidebar.ejs') %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="h3 mb-2 text-gray-800">Input Absensi Peserta</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/recap_absensi">Rekap Absensi</a></li>
+            <li class="breadcrumb-item active">Input</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <% if (alert && alert.message.length > 0) { %>
+        <div class="alert alert-<%= alert.status %> alert-dismissible fade show" role="alert">
+          <%= alert.message %>
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      <% } %>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Form Input Absensi</h3>
+            </div>
+
+            <form action="/recap_absensi/create" method="POST">
+              <div class="card-body">
+                <!-- Pilih Materi -->
+                <div class="form-group">
+                  <label for="nameAbsensi">Pilih Materi</label>
+                  <select name="nameAbsensi" class="form-control" required>
+                    <option value="">-- Pilih Materi --</option>
+                    <% materi.forEach(m => { %>
+                      <option value="<%= m._id %>">
+                        <%= m.name_materi.length > 0 ? m.name_materi[0].materi : "Tanpa Nama Materi" %>
+                      </option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <!-- Pilih Status Kehadiran -->
+                <div class="form-group">
+                  <label for="status">Pilih Status Kehadiran</label>
+                  <select name="status" class="form-control" required>
+                    <option value="">-- Pilih Status --</option>
+                    <% statusList.forEach(s => { %>
+                      <option value="<%= s._id %>"><%= s.status %></option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <!-- Checklist Peserta -->
+                <div class="form-group">
+                  <label>Checklist Peserta</label>
+                  <div class="border p-3" style="max-height: 300px; overflow-y: scroll;">
+                    <% peserta.forEach(p => { %>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="peserta" value="<%= p._id %>" id="peserta-<%= p._id %>">
+                        <label class="form-check-label" for="peserta-<%= p._id %>">
+                          <%= p.name %> - <%= p.asal_cabang %>
+                        </label>
+                      </div>
+                    <% }) %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <a href="/recap_absensi" class="btn btn-secondary">Kembali</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../../partial/footer.ejs') %>
+<%- include('../../partial/js.ejs') %>
